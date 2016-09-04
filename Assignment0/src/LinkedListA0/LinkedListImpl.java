@@ -15,7 +15,33 @@ public class LinkedListImpl implements LIST_Interface {
         root = new Node(0);
     }
 
+    /**
+     * Clear the list.
+     *
+     * To clear the list, the {@code next} attribute of the root
+     * node is set to {@code null}.
+     */
+    public void clear() {
+        root.next = null;
+    }
+
     public Node getRoot() {
         return root;
+    }
+
+    /**
+     * Get the number of items in the list.
+     * @return The number of {@code Node} instances in the list.
+     */
+    public int size() {
+        Node current = root;
+        int size = 0;
+
+        while (current.getNext() != null) {
+            size++;
+            current = current.getNext();
+        }
+
+        return size;
     }
 }
