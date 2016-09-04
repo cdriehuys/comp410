@@ -30,6 +30,36 @@ public class LinkedListImpl implements LIST_Interface {
     }
 
     /**
+     * Insert a new {@code Node} in the list.
+     * @param element The new {@code Node} to insert.
+     * @param index The index to insert the new data at.
+     * @return {@code true} if the data was successfully inserted,
+     *         {@code false} otherwise.
+     */
+    public boolean insert(Node element, int index) {
+        if (index > size()) {
+            return false;
+        }
+
+        int curIndex = 0;
+        Node curNode = root;
+
+        while (curIndex < index) {
+            curIndex++;
+            curNode = curNode.getNext();
+        }
+
+        Node next = curNode.getNext();
+        curNode.next = element;
+
+        if (next != null) {
+            element.next = next;
+        }
+
+        return true;
+    }
+
+    /**
      * Determine if the list is empty.
      * @return {@code true} if the list is empty, {@code false} otherwise.
      */
