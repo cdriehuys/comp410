@@ -30,6 +30,14 @@ public class LinkedListImpl implements LIST_Interface {
     }
 
     /**
+     * Determine if the list is empty.
+     * @return {@code true} if the list is empty, {@code false} otherwise.
+     */
+    public boolean isEmpty() {
+        return root.getNext() == null;
+    }
+
+    /**
      * Get the number of items in the list.
      * @return The number of {@code Node} instances in the list.
      */
