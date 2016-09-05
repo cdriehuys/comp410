@@ -25,6 +25,32 @@ public class LinkedListImpl implements LIST_Interface {
         root.next = null;
     }
 
+    /**
+     * Get the node at the given index.
+     * @param index The index to retrieve the node from.
+     * @return The node at the given index if the index is in the list,
+     *         {@code null} otherwise.
+     */
+    public Node get(int index) {
+        if (isEmpty()) {
+            return null;
+        }
+
+        int curIndex = 0;
+        Node curNode = root.getNext();
+
+        while (curIndex < index) {
+            if (curNode.getNext() == null) {
+                return null;
+            }
+
+            curNode = curNode.getNext();
+            curIndex++;
+        }
+
+        return curNode;
+    }
+
     public Node getRoot() {
         return root;
     }
@@ -37,26 +63,35 @@ public class LinkedListImpl implements LIST_Interface {
      *         {@code false} otherwise.
      */
     public boolean insert(Node element, int index) {
-        if (index > size()) {
+        int size = size();
+
+        if (index > size) {
             return false;
         }
 
-        int curIndex = 0;
-        Node curNode = root;
+        if (index == size) {
+            if (index == 0) {
+                root.next = element;
+                element.prev = root;
 
-        while (curIndex < index) {
-            curIndex++;
-            curNode = curNode.getNext();
+                return true;
+            }
+
+            Node prev = get(index - 1);
+            prev.next = element;
+            element.prev = prev;
+
+            return true;
         }
 
-        Node next = curNode.getNext();
-        curNode.next = element;
-        element.prev = curNode;
+        Node prev = get(index - 1);
+        Node next = get(index + 1);
 
-        if (next != null) {
-            element.next = next;
-            next.prev = element;
-        }
+        prev.next = element;
+        element.prev = prev;
+
+        element.next = next;
+        next.prev = element;
 
         return true;
     }
@@ -77,20 +112,20 @@ public class LinkedListImpl implements LIST_Interface {
      *         {@code false} otherwise.
      */
     public boolean remove(int index) {
-        if (index >= size()) {
+        Node toRemove = get(index);
+
+        if (toRemove == null) {
             return false;
         }
 
-        int curIndex = 0;
-        Node curNode = root;
+        Node prev = toRemove.getPrev();
+        Node next = toRemove.getNext();
 
-        while (curIndex != index) {
-            curIndex++;
-            curNode = curNode.getNext();
+        prev.next = next;
+
+        if (next != null) {
+            next.prev = prev;
         }
-
-        curNode.getPrev().next = curNode.getNext();
-        curNode.getNext().prev = curNode.getPrev();
 
         return true;
     }
@@ -100,12 +135,10 @@ public class LinkedListImpl implements LIST_Interface {
      * @return The number of {@code Node} instances in the list.
      */
     public int size() {
-        Node current = root;
         int size = 0;
 
-        while (current.getNext() != null) {
+        while (get(size) != null) {
             size++;
-            current = current.getNext();
         }
 
         return size;
