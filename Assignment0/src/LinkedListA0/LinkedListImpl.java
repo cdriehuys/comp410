@@ -51,9 +51,11 @@ public class LinkedListImpl implements LIST_Interface {
 
         Node next = curNode.getNext();
         curNode.next = element;
+        element.prev = curNode;
 
         if (next != null) {
             element.next = next;
+            next.prev = element;
         }
 
         return true;
@@ -65,6 +67,32 @@ public class LinkedListImpl implements LIST_Interface {
      */
     public boolean isEmpty() {
         return root.getNext() == null;
+    }
+
+    /**
+     * Remove the node at the given index.
+     * @param index The 0-based index from which to remove the node
+     *              from.
+     * @return {@code true} if the node was successfully removed,
+     *         {@code false} otherwise.
+     */
+    public boolean remove(int index) {
+        if (index >= size()) {
+            return false;
+        }
+
+        int curIndex = 0;
+        Node curNode = root;
+
+        while (curIndex != index) {
+            curIndex++;
+            curNode = curNode.getNext();
+        }
+
+        curNode.getPrev().next = curNode.getNext();
+        curNode.getNext().prev = curNode.getPrev();
+
+        return true;
     }
 
     /**
