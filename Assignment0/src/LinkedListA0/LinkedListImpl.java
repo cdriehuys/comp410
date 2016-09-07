@@ -6,6 +6,8 @@ package LinkedListA0;
  * actual data.
  */
 public class LinkedListImpl implements LIST_Interface {
+    private int size;
+
     Node root;
 
     /**
@@ -18,6 +20,7 @@ public class LinkedListImpl implements LIST_Interface {
     public LinkedListImpl() {
         // Populate root node with dummy data
         root = new Node(0);
+        size = 0;
     }
 
     /**
@@ -28,6 +31,7 @@ public class LinkedListImpl implements LIST_Interface {
      */
     public void clear() {
         root.next = null;
+        size = 0;
     }
 
     /**
@@ -37,7 +41,7 @@ public class LinkedListImpl implements LIST_Interface {
      *         the list, {@code null} otherwise.
      */
     public Node get(int index) {
-        if (isEmpty()) {
+        if (isEmpty() || index >= size) {
             return null;
         }
 
@@ -74,8 +78,6 @@ public class LinkedListImpl implements LIST_Interface {
      *         {@code false} otherwise.
      */
     public boolean insert(Node element, int index) {
-        int size = size();
-
         if (index > size) {
             return false;
         }
@@ -84,38 +86,33 @@ public class LinkedListImpl implements LIST_Interface {
             if (size == 0) {
                 root.next = element;
                 element.prev = root;
+            } else {
+                Node next = get(index);
 
-                return true;
+                root.next = element;
+                element.prev = root;
+
+                element.next = next;
+                next.prev = element;
             }
-
-            Node next = get(index);
-
-            root.next = element;
-            element.prev = root;
-
-            element.next = next;
-            next.prev = element;
-
-            return true;
-        }
-
-        if (index == size) {
+        } else if (index == size) {
             Node prev = get(index - 1);
 
             prev.next = element;
             element.prev = prev;
+        } else {
 
-            return true;
+            Node prev = get(index - 1);
+            Node next = get(index);
+
+            prev.next = element;
+            element.prev = prev;
+
+            element.next = next;
+            next.prev = element;
         }
 
-        Node prev = get(index - 1);
-        Node next = get(index);
-
-        prev.next = element;
-        element.prev = prev;
-
-        element.next = next;
-        next.prev = element;
+        size++;
 
         return true;
     }
@@ -139,6 +136,11 @@ public class LinkedListImpl implements LIST_Interface {
      *         {@code false} otherwise.
      */
     public boolean remove(int index) {
+        // Get out quick if we can
+        if (index >= size) {
+            return false;
+        }
+
         Node toRemove = get(index);
 
         if (toRemove == null) {
@@ -154,6 +156,8 @@ public class LinkedListImpl implements LIST_Interface {
             next.prev = prev;
         }
 
+        size--;
+
         return true;
     }
 
@@ -162,12 +166,6 @@ public class LinkedListImpl implements LIST_Interface {
      * @return The number of {@code Node} instances in the list.
      */
     public int size() {
-        int size = 0;
-
-        while (get(size) != null) {
-            size++;
-        }
-
         return size;
     }
 }
