@@ -69,15 +69,28 @@ public class LinkedListImpl implements LIST_Interface {
             return false;
         }
 
-        if (index == size) {
-            if (index == 0) {
+        if (index == 0) {
+            if (size == 0) {
                 root.next = element;
                 element.prev = root;
 
                 return true;
             }
 
+            Node next = get(index);
+
+            root.next = element;
+            element.prev = root;
+
+            element.next = next;
+            next.prev = element;
+
+            return true;
+        }
+
+        if (index == size) {
             Node prev = get(index - 1);
+
             prev.next = element;
             element.prev = prev;
 
@@ -85,7 +98,7 @@ public class LinkedListImpl implements LIST_Interface {
         }
 
         Node prev = get(index - 1);
-        Node next = get(index + 1);
+        Node next = get(index);
 
         prev.next = element;
         element.prev = prev;
