@@ -1,15 +1,20 @@
-/**
- * COMP 410
- *See inline comment descriptions for methods not described in interface.
- *
- */
 package LinkedListA0;
 
+/**
+ * The {@code LinkedListImpl} class is an implementation of a linked
+ * list. It is comprised of {@link Node Node} instances that store the
+ * actual data.
+ */
 public class LinkedListImpl implements LIST_Interface {
-    // Entry point for the linked list
     Node root;
 
-
+    /**
+     * Create a new linked list.
+     *
+     * The beginning of the list is marked by the sentinel {@code Node},
+     * which can be retrieved with the {@link #getRoot() getRoot}
+     * method.
+     */
     public LinkedListImpl() {
         // Populate root node with dummy data
         root = new Node(0);
@@ -26,10 +31,10 @@ public class LinkedListImpl implements LIST_Interface {
     }
 
     /**
-     * Get the node at the given index.
-     * @param index The index to retrieve the node from.
-     * @return The node at the given index if the index is in the list,
-     *         {@code null} otherwise.
+     * Get the {@code Node} at the given index.
+     * @param index The index of the data to retrieve from the list.
+     * @return The {@code Node} at the given index if the index is in
+     *         the list, {@code null} otherwise.
      */
     public Node get(int index) {
         if (isEmpty()) {
@@ -51,6 +56,12 @@ public class LinkedListImpl implements LIST_Interface {
         return curNode;
     }
 
+    /**
+     * Get the sentinel {@code Node} for the list.
+     *
+     * This {@code Node} marks the beginning of the list.
+     * @return The root {@code Node}.
+     */
     public Node getRoot() {
         return root;
     }
@@ -111,17 +122,20 @@ public class LinkedListImpl implements LIST_Interface {
 
     /**
      * Determine if the list is empty.
-     * @return {@code true} if the list is empty, {@code false} otherwise.
+     *
+     * A list is defined as empty if the {@code next} attribute of the
+     * sentinel {@code Node} is {@code null}.
+     * @return {@code true} if the list is empty, {@code false}
+     *         otherwise.
      */
     public boolean isEmpty() {
         return root.getNext() == null;
     }
 
     /**
-     * Remove the node at the given index.
-     * @param index The 0-based index from which to remove the node
-     *              from.
-     * @return {@code true} if the node was successfully removed,
+     * Remove the {@code Node} at the given index.
+     * @param index The index from which to remove the {@code Node}.
+     * @return {@code true} if the {@code Node} was successfully removed,
      *         {@code false} otherwise.
      */
     public boolean remove(int index) {
