@@ -3,12 +3,13 @@ package BST_A2;
 /**
  * Created by chathan on 9/15/16.
  */
+
 public class BST_Node {
     String data;
     BST_Node left;
     BST_Node right;
 
-    BST_Node(String data){ this.data=data; }
+    public BST_Node(String data){ this.data=data; }
 
     // --- used for testing  ----------------------------------------------
     //
@@ -19,6 +20,33 @@ public class BST_Node {
     public BST_Node getRight(){ return right; }
 
     // --- end used for testing -------------------------------------------
+
+    /**
+     * Check if a value is contained within or under the current node.
+     * @param s The value to check for.
+     * @return {@code true} if {@code s} is equivalent to the current
+     *         node's data, or if it is contained in the children of
+     *         the current node. Returns {@code false} otherwise.
+     */
+    public boolean containsNode(String s) {
+        if (data.equals(s)) {
+            return true;
+        }
+
+        if (s.compareTo(data) < 0) {
+            return left != null && left.containsNode(s);
+        } else {
+            return right != null && right.containsNode(s);
+        }
+    }
+
+    public void setLeft(BST_Node node) {
+        left = node;
+    }
+
+    public void setRight(BST_Node node) {
+        right = node;
+    }
 
 
     // --- fill in these methods ------------------------------------------

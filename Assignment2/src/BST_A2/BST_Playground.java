@@ -38,7 +38,7 @@ public class BST_Playground {
     static void printLevelOrder(BST tree){
         //will print your current tree in Level-Order...
         //https://en.wikipedia.org/wiki/Tree_traversal
-        int h=tree.getRoot().getHeight();
+        int h=3; //tree.getRoot().getHeight();
         for(int i=0;i<=h;i++){
             printGivenLevel(tree.getRoot(), i);
         }
