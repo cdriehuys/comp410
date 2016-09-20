@@ -39,4 +39,44 @@ public class TestBST_Node {
 
         Assert.assertFalse(node.containsNode("bar"));
     }
+
+    @Test
+    public void insertDuplicate() {
+        BST_Node node = new BST_Node("foo");
+
+        Assert.assertFalse(node.insertNode(new BST_Node("foo")));
+    }
+
+    @Test
+    public void insertLeftChild() {
+        BST_Node root = new BST_Node("beta");
+        BST_Node child = new BST_Node("alpha");
+
+        root.insertNode(child);
+
+        Assert.assertEquals(child, root.getLeft());
+    }
+
+    @Test
+    public void insertRecursive() {
+        BST_Node root = new BST_Node("gamma");
+
+        BST_Node child = new BST_Node("alpha");
+        root.setLeft(child);
+
+        BST_Node grandchild = new BST_Node("beta");
+        root.insertNode(grandchild);
+
+        Assert.assertEquals(grandchild, child.getRight());
+    }
+
+    @Test
+    public void insertRightChild() {
+        BST_Node root = new BST_Node("beta");
+        BST_Node child = new BST_Node("gamma");
+
+        root.insertNode(child);
+
+        Assert.assertEquals(child, root.getRight());
+    }
 }

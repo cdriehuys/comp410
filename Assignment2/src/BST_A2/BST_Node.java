@@ -40,6 +40,40 @@ public class BST_Node {
         }
     }
 
+    /**
+     * Insert a node as a child of this node.
+     *
+     * The node should be successfully inserted unless it is equivalent
+     * to a node that is already present.
+     * @param node The node to insert.
+     * @return {@code true} if the insert succeeds, {@code false}
+     *         otherwise.
+     */
+    public boolean insertNode(BST_Node node) {
+        // If inserting duplicated data, return false
+        if (node.getData().equals(data)) {
+            return false;
+        }
+
+        if (node.getData().compareTo(data) < 0) {
+            if (left == null) {
+                left = node;
+
+                return true;
+            }
+
+            return left.insertNode(node);
+        }
+
+        if (right == null) {
+            right = node;
+
+            return true;
+        }
+
+        return right.insertNode(node);
+    }
+
     public void setLeft(BST_Node node) {
         left = node;
     }
@@ -64,8 +98,6 @@ public class BST_Node {
     // you may use recursive or iterative implementations
 
   /*
-  public boolean containsNode(String s){ return false; }
-  public boolean insertNode(String s){ return false; }
   public boolean removeNode(String s){ return false; }
   public BST_Node findMin(){ return left; }
   public BST_Node findMax(){ return right; }
