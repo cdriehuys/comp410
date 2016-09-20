@@ -34,6 +34,35 @@ public class TestBST_Node {
     }
 
     @Test
+    public void findMinNoChildren() {
+        BST_Node root = new BST_Node("foo");
+
+        Assert.assertEquals(root, root.findMin());
+    }
+
+    @Test
+    public void findMinRecursive() {
+        BST_Node root = new BST_Node("gamma");
+        BST_Node child = new BST_Node("beta");
+        BST_Node grandchild = new BST_Node("alpha");
+
+        root.setLeft(child);
+        child.setLeft(grandchild);
+
+        Assert.assertEquals(grandchild, root.findMin());
+    }
+
+    @Test
+    public void findMinWithChildren() {
+        BST_Node root = new BST_Node("beta");
+
+        BST_Node left = new BST_Node("alpha");
+        root.setLeft(left);
+
+        Assert.assertEquals(left, root.findMin());
+    }
+
+    @Test
     public void containsWithNoChildren() {
         BST_Node node = new BST_Node("foo");
 

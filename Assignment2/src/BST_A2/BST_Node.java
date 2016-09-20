@@ -41,6 +41,16 @@ public class BST_Node {
     }
 
     /**
+     * Find the minimum value in the tree that has the current node as
+     * the root node.
+     * @return The left-most leaf of the tree with this node as the
+     *         root.
+     */
+    public BST_Node findMin() {
+        return left == null ? this : left.findMin();
+    }
+
+    /**
      * Insert a node as a child of this node.
      *
      * The node should be successfully inserted unless it is equivalent
@@ -99,7 +109,6 @@ public class BST_Node {
 
   /*
   public boolean removeNode(String s){ return false; }
-  public BST_Node findMin(){ return left; }
   public BST_Node findMax(){ return right; }
   public int getHeight(){ return 0; }
   */
