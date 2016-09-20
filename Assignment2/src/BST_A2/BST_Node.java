@@ -60,6 +60,11 @@ public class BST_Node {
         return left == null ? this : left.findMin();
     }
 
+    /**
+     * Find the height of the tree that has the current node as the
+     * root node.
+     * @return The maximum edge-length from the current node to a leaf.
+     */
     public int getHeight() {
         if (left != null && right != null) {
             return 1 + Math.max(left.getHeight(), right.getHeight());
