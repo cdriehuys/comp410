@@ -34,6 +34,35 @@ public class TestBST_Node {
     }
 
     @Test
+    public void findMaxNoChildren() {
+        BST_Node root = new BST_Node("foo");
+
+        Assert.assertEquals(root, root.findMax());
+    }
+
+    @Test
+    public void findMaxRecursive() {
+        BST_Node root = new BST_Node("alpha");
+        BST_Node child = new BST_Node("beta");
+        BST_Node grandchild = new BST_Node("gamma");
+
+        root.setRight(child);
+        child.setRight(grandchild);
+
+        Assert.assertEquals(grandchild, root.findMax());
+    }
+
+    @Test
+    public void findMaxWithChildren() {
+        BST_Node root = new BST_Node("alpha");
+
+        BST_Node right = new BST_Node("beta");
+        root.setRight(right);
+
+        Assert.assertEquals(right, root.findMax());
+    }
+
+    @Test
     public void findMinNoChildren() {
         BST_Node root = new BST_Node("foo");
 
