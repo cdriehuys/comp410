@@ -60,6 +60,18 @@ public class BST_Node {
         return left == null ? this : left.findMin();
     }
 
+    public int getHeight() {
+        if (left != null && right != null) {
+            return 1 + Math.max(left.getHeight(), right.getHeight());
+        } else if (left != null) {
+            return 1 + left.getHeight();
+        } else if (right != null) {
+            return 1 + right.getHeight();
+        }
+
+        return 0;
+    }
+
     /**
      * Insert a node as a child of this node.
      *
@@ -119,7 +131,6 @@ public class BST_Node {
 
   /*
   public boolean removeNode(String s){ return false; }
-  public int getHeight(){ return 0; }
   */
 
     // --- end fill in these methods --------------------------------------

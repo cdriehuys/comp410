@@ -34,6 +34,38 @@ public class TestBST_Node {
     }
 
     @Test
+    public void getHeightNoChildren() {
+        BST_Node root = new BST_Node("foo");
+
+        Assert.assertEquals(0, root.getHeight());
+    }
+
+    @Test
+    public void getHeightRecursive() {
+        BST_Node root = new BST_Node("alpha");
+        root.insertNode(new BST_Node("beta"));
+        root.insertNode(new BST_Node("gamma"));
+
+        Assert.assertEquals(2, root.getHeight());
+    }
+
+    @Test
+    public void getHeightWithChildren() {
+        BST_Node root = new BST_Node("beta");
+        BST_Node left = new BST_Node("alpha");
+        BST_Node right = new BST_Node("gamma");
+
+        root.setLeft(left);
+
+        Assert.assertEquals(1, root.getHeight());
+
+        root.setLeft(null);
+        root.setRight(right);
+
+        Assert.assertEquals(1, root.getHeight());
+    }
+
+    @Test
     public void findMaxNoChildren() {
         BST_Node root = new BST_Node("foo");
 
