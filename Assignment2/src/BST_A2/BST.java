@@ -12,7 +12,15 @@ public class BST implements BST_Interface {
 
     @Override
     public boolean insert(String s) {
-        return false;
+        BST_Node newNode = new BST_Node(s);
+
+        if (root == null) {
+            root = newNode;
+
+            return true;
+        }
+
+        return root.insertNode(newNode);
     }
 
     @Override
