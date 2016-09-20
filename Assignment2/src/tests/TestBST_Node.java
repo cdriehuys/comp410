@@ -169,4 +169,41 @@ public class TestBST_Node {
 
         Assert.assertEquals(child, root.getRight());
     }
+
+    @Test
+    public void removeLeaf() {
+        BST_Node root = new BST_Node("beta");
+        BST_Node left = new BST_Node("alpha");
+        BST_Node right = new BST_Node("gamma");
+
+        root.insertNode(left);
+
+        Assert.assertTrue(root.removeNode("alpha"));
+        Assert.assertNull(root.getLeft());
+
+        root.insertNode(right);
+
+        Assert.assertTrue(root.removeNode("gamma"));
+        Assert.assertNull(root.getRight());
+    }
+
+    @Test
+    public void removeNodeWithSingleChild() {
+        BST_Node root = new BST_Node("gamma");
+        BST_Node child = new BST_Node("beta");
+        BST_Node grandchild = new BST_Node("alpha");
+
+        root.insertNode(child);
+        root.insertNode(grandchild);
+
+        Assert.assertTrue(root.removeNode(child.getData()));
+        Assert.assertEquals(grandchild, root.getLeft());
+    }
+
+    @Test
+    public void removeNonExistent() {
+        BST_Node root = new BST_Node("foo");
+
+        Assert.assertFalse(root.removeNode("bar"));
+    }
 }

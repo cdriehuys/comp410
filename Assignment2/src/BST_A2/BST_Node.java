@@ -111,6 +111,69 @@ public class BST_Node {
         return right.insertNode(node);
     }
 
+    /**
+     * Remove the node with the given data from the tree with the
+     * current node as the root node.
+     * @param s The data to search for.
+     * @return {@code} true if the node was removed, {@code false}
+     *         otherwise.
+     */
+    public boolean removeNode(String s) {
+        if (s.compareTo(data) < 0) {
+            if (left == null) {
+                return false;
+            }
+
+            if (s.equals(left.getData())) {
+                if (left.left == null && left.right == null) {
+                    left = null;
+                } else if (left.right != null) {
+                    BST_Node min = left.right.findMin();
+                    left.right.removeNode(min.getData());
+
+                    min.left = left.left;
+                    min.right = left.right;
+
+                    left = min;
+                } else {
+                    left = left.left;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        if (s.compareTo(data) > 0) {
+            if (right == null) {
+                return false;
+            }
+
+            if (s.equals(right.getData())) {
+                if (right.left == null && right.right == null) {
+                    right = null;
+                } else if (right.left != null) {
+                    BST_Node min = right.left.findMin();
+                    right.left.removeNode(min.getData());
+
+                    min.left = right.left;
+                    min.right = right.right;
+
+                    right = min;
+                } else {
+                    right = right.right;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
+    }
+
     public void setLeft(BST_Node node) {
         left = node;
     }
@@ -118,25 +181,6 @@ public class BST_Node {
     public void setRight(BST_Node node) {
         right = node;
     }
-
-
-    // --- fill in these methods ------------------------------------------
-    //
-    // at the moment, they are stubs returning false
-    // or some appropriate "fake" value
-    //
-    // you make them work properly
-    // add the meat of correct implementation logic to them
-
-    // you MAY change the signatures if you wish...
-    // make the take more or different parameters
-    // have them return different types
-    //
-    // you may use recursive or iterative implementations
-
-  /*
-  public boolean removeNode(String s){ return false; }
-  */
 
     // --- end fill in these methods --------------------------------------
 
