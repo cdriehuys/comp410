@@ -11,6 +11,30 @@ import org.junit.Test;
 public class TestBST {
 
     @Test
+    public void findMinChildren() {
+        BST tree = new BST();
+        tree.insert("beta");
+        tree.insert("alpha");
+
+        Assert.assertEquals("alpha", tree.findMin());
+    }
+
+    @Test
+    public void findMinNullRoot() {
+        BST tree = new BST();
+
+        Assert.assertNull(tree.findMin());
+    }
+
+    @Test
+    public void findMinRootOnly() {
+        BST tree = new BST();
+        tree.insert("alpha");
+
+        Assert.assertEquals(tree.getRoot().getData(), tree.findMin());
+    }
+
+    @Test
     public void insertData() {
         BST tree = new BST();
 
