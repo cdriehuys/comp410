@@ -1,4 +1,4 @@
-/**
+/*
  * COMP 410
  *
  * Make your class and its methods public!

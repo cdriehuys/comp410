@@ -1,23 +1,21 @@
 package BST_A2;
 
 /**
- * Created by chathan on 9/15/16.
+ * Represents a node in a Binary Search Tree. It stores a single piece
+ * of data, and contains most of the logic for the tree.
  */
-
 public class BST_Node {
     String data;
     BST_Node left;
     BST_Node right;
 
-    public BST_Node(String data){ this.data=data; }
-
-    // --- used for testing  ----------------------------------------------
-    //
-    // leave these 3 methods in, as is
-
-    public String getData(){ return data; }
-    public BST_Node getLeft(){ return left; }
-    public BST_Node getRight(){ return right; }
+    /**
+     * Create a new node.
+     * @param data The data to store in this node.
+     */
+    public BST_Node(String data) {
+        this.data=data;
+    }
 
     // --- end used for testing -------------------------------------------
 
@@ -61,6 +59,14 @@ public class BST_Node {
     }
 
     /**
+     * Get the data stored in this node.
+     * @return The string stored in this node.
+     */
+    public String getData() {
+        return data;
+    }
+
+    /**
      * Find the height of the tree that has the current node as the
      * root node.
      * @return The maximum edge-length from the current node to a leaf.
@@ -75,6 +81,22 @@ public class BST_Node {
         }
 
         return 0;
+    }
+
+    /**
+     * Get the left child of this node.
+     * @return The left child of this node.
+     */
+    public BST_Node getLeft() {
+        return left;
+    }
+
+    /**
+     * Get the right child of this node.
+     * @return The right child of this node.
+     */
+    public BST_Node getRight() {
+        return right;
     }
 
     /**
@@ -174,21 +196,28 @@ public class BST_Node {
         return false;
     }
 
+    /**
+     * Set the left child of the current node.
+     * @param node The node to set as the left child of the current
+     *             node.
+     */
     public void setLeft(BST_Node node) {
         left = node;
     }
 
+    /**
+     * Set the right child of the current node.
+     * @param node The node to set as the right child of the current
+     *             node.
+     */
     public void setRight(BST_Node node) {
         right = node;
     }
 
-    // --- end fill in these methods --------------------------------------
-
-
-    // --------------------------------------------------------------------
-    // you may add any other methods you want to get the job done
-    // --------------------------------------------------------------------
-
+    /**
+     * Get a string representation of the node.
+     * @return A string containing information about the node.
+     */
     public String toString(){
         return "Data: "+this.data+", Left: "+((this.left!=null)?left.data:"null")
                 +",Right: "+((this.right!=null)?right.data:"null");
