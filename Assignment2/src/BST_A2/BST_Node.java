@@ -17,8 +17,6 @@ public class BST_Node {
         this.data=data;
     }
 
-    // --- end used for testing -------------------------------------------
-
     /**
      * Check if a value is contained within or under the current node.
      * @param s The value to check for.
@@ -141,59 +139,7 @@ public class BST_Node {
      *         otherwise.
      */
     public boolean removeNode(String s) {
-        if (s.compareTo(data) < 0) {
-            if (left == null) {
-                return false;
-            }
-
-            if (s.equals(left.getData())) {
-                if (left.left == null && left.right == null) {
-                    left = null;
-                } else if (left.right != null) {
-                    BST_Node min = left.right.findMin();
-                    left.right.removeNode(min.getData());
-
-                    min.left = left.left;
-                    min.right = left.right;
-
-                    left = min;
-                } else {
-                    left = left.left;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        if (s.compareTo(data) > 0) {
-            if (right == null) {
-                return false;
-            }
-
-            if (s.equals(right.getData())) {
-                if (right.left == null && right.right == null) {
-                    right = null;
-                } else if (right.left != null) {
-                    BST_Node min = right.left.findMin();
-                    right.left.removeNode(min.getData());
-
-                    min.left = right.left;
-                    min.right = right.right;
-
-                    right = min;
-                } else {
-                    right = right.right;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        return false;
+        return (s.compareTo(data) < 0) ? removeLeft(s) : removeRight(s);
     }
 
     /**
@@ -221,5 +167,75 @@ public class BST_Node {
     public String toString(){
         return "Data: "+this.data+", Left: "+((this.left!=null)?left.data:"null")
                 +",Right: "+((this.right!=null)?right.data:"null");
+    }
+
+
+    // -------------------- BEGIN PRIVATE METHODS ------------------ //
+
+
+    /**
+     * Remove a value from the tree with this node's left child as the
+     * root.
+     * @param s The value to remove.
+     * @return {@code true} if the removal was successful,
+     *         {@code false} otherwise.
+     */
+    private boolean removeLeft(String s) {
+        if (left == null) {
+            return false;
+        }
+
+        if (s.equals(left.getData())) {
+            if (left.left == null && left.right == null) {
+                left = null;
+            } else if (left.right != null) {
+                BST_Node min = left.right.findMin();
+                left.right.removeNode(min.getData());
+
+                min.left = left.left;
+                min.right = left.right;
+
+                left = min;
+            } else {
+                left = left.left;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove a value from the tree with this node's right child as the
+     * root.
+     * @param s The value to remove.
+     * @return {@code true} if the removal was successful,
+     *         {@code false} otherwise.
+     */
+    private boolean removeRight(String s) {
+        if (right == null) {
+            return false;
+        }
+
+        if (s.equals(right.getData())) {
+            if (right.left == null && right.right == null) {
+                right = null;
+            } else if (right.left != null) {
+                BST_Node min = right.left.findMin();
+                right.left.removeNode(min.getData());
+
+                min.left = right.left;
+                min.right = right.right;
+
+                right = min;
+            } else {
+                right = right.right;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
