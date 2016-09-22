@@ -11,6 +11,30 @@ import org.junit.Test;
 public class TestBST {
 
     @Test
+    public void findMaxChildren() {
+        BST tree = new BST();
+        tree.insert("alpha");
+        tree.insert("beta");
+
+        Assert.assertEquals("beta", tree.findMax());
+    }
+
+    @Test
+    public void findMaxNullRoot() {
+        BST tree = new BST();
+
+        Assert.assertNull(tree.findMax());
+    }
+
+    @Test
+    public void findMaxRootOnly() {
+        BST tree = new BST();
+        tree.insert("alpha");
+
+        Assert.assertEquals("alpha", tree.findMax());
+    }
+
+    @Test
     public void findMinChildren() {
         BST tree = new BST();
         tree.insert("beta");

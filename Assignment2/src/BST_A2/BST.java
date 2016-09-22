@@ -61,9 +61,14 @@ public class BST implements BST_Interface {
         return root == null ? null : root.findMin().getData();
     }
 
+    /**
+     * Find the maximum value in the tree.
+     * @return The largest value in the tree. Returns {@code null} if
+     *         the root is {@code null}.
+     */
     @Override
     public String findMax() {
-        return null;
+        return root == null ? null : root.findMax().getData();
     }
 
     @Override
