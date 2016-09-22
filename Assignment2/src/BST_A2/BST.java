@@ -71,9 +71,14 @@ public class BST implements BST_Interface {
         return root == null ? null : root.findMax().getData();
     }
 
+    /**
+     * Determine if the tree is empty.
+     * @return {@code true} if the root is {@code null}, {@code false}
+     *         otherwise.
+     */
     @Override
     public boolean empty() {
-        return false;
+        return root == null;
     }
 
     @Override

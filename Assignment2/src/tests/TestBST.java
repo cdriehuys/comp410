@@ -11,6 +11,21 @@ import org.junit.Test;
 public class TestBST {
 
     @Test
+    public void empty() {
+        BST tree = new BST();
+
+        Assert.assertTrue(tree.empty());
+    }
+
+    @Test
+    public void emptyNotEmpty() {
+        BST tree = new BST();
+        tree.insert("foo");
+
+        Assert.assertFalse(tree.empty());
+    }
+
+    @Test
     public void findMaxChildren() {
         BST tree = new BST();
         tree.insert("alpha");
