@@ -81,9 +81,15 @@ public class BST implements BST_Interface {
         return root == null;
     }
 
+    /**
+     * Determine if the tree contains a particular value.
+     * @param s The value to search for.
+     * @return {@code true} if the value is in the tree, {@code false}
+     *         otherwise.
+     */
     @Override
     public boolean contains(String s) {
-        return false;
+        return root != null && root.containsNode(s);
     }
 
     @Override

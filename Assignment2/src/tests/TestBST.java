@@ -11,6 +11,21 @@ import org.junit.Test;
 public class TestBST {
 
     @Test
+    public void contains() {
+        BST tree = new BST();
+        tree.insert("foo");
+
+        Assert.assertTrue(tree.contains("foo"));
+    }
+
+    @Test
+    public void containsNullRoot() {
+        BST tree = new BST();
+
+        Assert.assertFalse(tree.contains("foo"));
+    }
+
+    @Test
     public void empty() {
         BST tree = new BST();
 
