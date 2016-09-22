@@ -16,11 +16,18 @@ public class BST implements BST_Interface {
 
         if (root == null) {
             root = newNode;
+            size++;
 
             return true;
         }
 
-        return root.insertNode(newNode);
+        boolean success = root.insertNode(newNode);
+
+        if (success) {
+            size++;
+        }
+
+        return success;
     }
 
     @Override
@@ -50,10 +57,18 @@ public class BST implements BST_Interface {
                 root = min;
             }
 
+            size--;
+
             return true;
         }
 
-        return root.removeNode(s);
+        boolean success = root.removeNode(s);
+
+        if (success) {
+            size--;
+        }
+
+        return success;
     }
 
     @Override
@@ -92,9 +107,13 @@ public class BST implements BST_Interface {
         return root != null && root.containsNode(s);
     }
 
+    /**
+     * Get the size of the tree.
+     * @return The number of nodes in the tree.
+     */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override

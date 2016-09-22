@@ -136,4 +136,26 @@ public class TestBST {
         Assert.assertTrue(tree.remove(tree.root.getData()));
         Assert.assertNull(tree.root);
     }
+
+    @Test
+    public void sizeInitial() {
+        Assert.assertEquals(0, (new BST()).size());
+    }
+
+    @Test
+    public void sizeInsert() {
+        BST tree = new BST();
+        tree.insert("foo");
+
+        Assert.assertEquals(1, tree.size());
+    }
+
+    @Test
+    public void sizeRemove() {
+        BST tree = new BST();
+        tree.insert("foo");
+        tree.remove("foo");
+
+        Assert.assertEquals(0, tree.size());
+    }
 }
