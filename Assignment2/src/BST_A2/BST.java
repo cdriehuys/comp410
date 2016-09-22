@@ -116,9 +116,14 @@ public class BST implements BST_Interface {
         return size;
     }
 
+    /**
+     * Get the height of the tree.
+     * @return The maximum number of edges between the root node and a
+     *         leaf node. If the root node is {@code null}, returns -1.
+     */
     @Override
     public int height() {
-        return 0;
+        return root == null ? -1 : root.getHeight();
     }
 
     @Override

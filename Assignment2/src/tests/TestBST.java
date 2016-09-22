@@ -89,6 +89,30 @@ public class TestBST {
     }
 
     @Test
+    public void heightChildren() {
+        BST tree = new BST();
+        tree.insert("alpha");
+        tree.insert("beta");
+
+        Assert.assertEquals(1, tree.height());
+    }
+
+    @Test
+    public void heightNullRoot() {
+        BST tree = new BST();
+
+        Assert.assertEquals(-1, tree.height());
+    }
+
+    @Test
+    public void heightOnlyRoot() {
+        BST tree = new BST();
+        tree.insert("foo");
+
+        Assert.assertEquals(0, tree.height());
+    }
+
+    @Test
     public void insertData() {
         BST tree = new BST();
 
