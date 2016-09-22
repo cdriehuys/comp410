@@ -201,6 +201,18 @@ public class TestBST_Node {
     }
 
     @Test
+    public void removeWorstCase() {
+        BST_Node root = new BST_Node("alpha");
+        root.insertNode(new BST_Node("beta"));
+        root.insertNode(new BST_Node("gamma"));
+        root.insertNode(new BST_Node("theta"));
+
+        Assert.assertTrue(root.removeNode("beta"));
+        Assert.assertEquals("gamma", root.getRight().getData());
+        Assert.assertEquals("theta", root.getRight().getRight().getData());
+    }
+
+    @Test
     public void removeNonExistent() {
         BST_Node root = new BST_Node("foo");
 

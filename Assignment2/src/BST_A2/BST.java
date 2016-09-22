@@ -25,7 +25,35 @@ public class BST implements BST_Interface {
 
     @Override
     public boolean remove(String s) {
-        return false;
+        if (root == null) {
+            return false;
+        }
+
+        if (s.equals(root.getData())) {
+            if (root.left == null && root.right == null) {
+                root = null;
+            } else if (root.left != null) {
+                BST_Node max = root.left.findMax();
+                root.left.removeNode(max.getData());
+
+                max.left = root.left;
+                max.right = root.right;
+
+                root = max;
+            } else {
+                BST_Node min = root.right.findMin();
+                root.right.removeNode(min.getData());
+
+                min.left = root.left;
+                min.right = root.right;
+
+                root = min;
+            }
+
+            return true;
+        }
+
+        return root.removeNode(s);
     }
 
     @Override

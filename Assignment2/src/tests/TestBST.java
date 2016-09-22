@@ -28,4 +28,34 @@ public class TestBST {
         Assert.assertTrue(tree.insert("foo"));
         Assert.assertEquals("foo", tree.getRoot().getData());
     }
+
+    @Test
+    public void removeChild() {
+        BST tree = new BST();
+
+        BST_Node root = new BST_Node("alpha");
+        BST_Node child = new BST_Node("beta");
+
+        tree.root = root;
+        tree.root.setRight(child);
+
+        Assert.assertTrue(tree.remove(child.getData()));
+        Assert.assertNull(root.getRight());
+    }
+
+    @Test
+    public void removeNullRoot() {
+        BST tree = new BST();
+
+        Assert.assertFalse(tree.remove("foo"));
+    }
+
+    @Test
+    public void removeRoot() {
+        BST tree = new BST();
+        tree.root = new BST_Node("foo");
+
+        Assert.assertTrue(tree.remove(tree.root.getData()));
+        Assert.assertNull(tree.root);
+    }
 }
