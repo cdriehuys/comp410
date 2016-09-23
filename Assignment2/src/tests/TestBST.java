@@ -41,6 +41,24 @@ public class TestBST {
     }
 
     @Test
+    public void emptyComplex() {
+        BST tree = new BST();
+        tree.insert("B");
+        tree.insert("A");
+        tree.insert("D");
+        tree.insert("C");
+        tree.insert("E");
+
+        tree.remove("B");
+        tree.remove("A");
+        tree.remove("D");
+        tree.remove("C");
+        tree.remove("E");
+
+        Assert.assertTrue(tree.empty());
+    }
+
+    @Test
     public void findMaxChildren() {
         BST tree = new BST();
         tree.insert("alpha");
@@ -143,6 +161,22 @@ public class TestBST {
 
         Assert.assertTrue(tree.remove(child.getData()));
         Assert.assertNull(root.getRight());
+    }
+
+    @Test
+    public void removeInternal() {
+        BST tree = new BST();
+
+        tree.insert("B");
+        tree.insert("A");
+        tree.insert("D");
+        tree.insert("C");
+        tree.insert("E");
+
+        tree.remove("D");
+
+        Assert.assertEquals("C", tree.getRoot().getRight().getData());
+        Assert.assertEquals("E", tree.getRoot().getRight().getRight().getData());
     }
 
     @Test

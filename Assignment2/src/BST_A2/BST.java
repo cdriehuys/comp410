@@ -118,6 +118,40 @@ public class BST implements BST_Interface {
             if (root.left == null && root.right == null) {
                 root = null;
             } else if (root.left != null) {
+                if (root.right == null) {
+                    root = root.left;
+                    size--;
+
+                    return true;
+                }
+
+                BST_Node max = root.left.findMax();
+                root.left.removeNode(max.getData());
+
+                max.left = root.left == max ? null : root.left;
+                max.right = root.right;
+
+                root = max;
+            } else {
+                root = root.right;
+            }
+
+            size--;
+
+            return true;
+        }
+/*
+        if (s.equals(root.getData())) {
+            if (root.left == null && root.right == null) {
+                root = null;
+            } else if (root.left != null) {
+                if (root.right == null) {
+                    root = root.left;
+                    size--;
+
+                    return true;
+                }
+
                 BST_Node max = root.left.findMax();
                 root.left.removeNode(max.getData());
 
@@ -139,7 +173,7 @@ public class BST implements BST_Interface {
 
             return true;
         }
-
+*/
         boolean success = root.removeNode(s);
 
         if (success) {

@@ -171,6 +171,47 @@ public class TestBST_Node {
     }
 
     @Test
+    public void removeInternal() {
+        BST_Node root = new BST_Node("B");
+        root.insertNode(new BST_Node("A"));
+        root.insertNode(new BST_Node("D"));
+        root.insertNode(new BST_Node("C"));
+        root.insertNode(new BST_Node("E"));
+
+        root.removeNode("D");
+
+        Assert.assertEquals("C", root.getRight().getData());
+        Assert.assertEquals("E", root.getRight().getRight().getData());
+        Assert.assertEquals("A, B, C, E", root.inOrder());
+    }
+
+    @Test
+    public void removeInternal2() {
+        BST_Node root = new BST_Node("0");
+        root.insertNode(new BST_Node("C"));
+        root.insertNode(new BST_Node("A"));
+        root.insertNode(new BST_Node("B"));
+
+        root.removeNode("C");
+
+        Assert.assertEquals("A", root.getRight().getData());
+        Assert.assertEquals("0, A, B", root.inOrder());
+    }
+
+    @Test
+    public void removeInternal3() {
+        BST_Node root = new BST_Node("0");
+        root.insertNode(new BST_Node("C"));
+        root.insertNode(new BST_Node("A"));
+        root.insertNode(new BST_Node("B"));
+        root.insertNode(new BST_Node("E"));
+        root.insertNode(new BST_Node("D"));
+
+        Assert.assertTrue(root.removeNode("C"));
+        Assert.assertEquals("0, A, B, D, E", root.inOrder());
+    }
+
+    @Test
     public void removeLeaf() {
         BST_Node root = new BST_Node("beta");
         BST_Node left = new BST_Node("alpha");
@@ -185,6 +226,18 @@ public class TestBST_Node {
 
         Assert.assertTrue(root.removeNode("gamma"));
         Assert.assertNull(root.getRight());
+    }
+
+    @Test
+    public void removeLeafComplex() {
+        BST_Node root = new BST_Node("B");
+        root.insertNode(new BST_Node("A"));
+        root.insertNode(new BST_Node("D"));
+        root.insertNode(new BST_Node("C"));
+        root.insertNode(new BST_Node("E"));
+
+        Assert.assertTrue(root.removeNode("E"));
+        Assert.assertEquals("A, B, C, D", root.inOrder());
     }
 
     @Test

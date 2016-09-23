@@ -97,6 +97,34 @@ public class BST_Node {
         return right;
     }
 
+    public String inOrder() {
+        String ret;
+
+        if (left != null) {
+            ret = left.inOrder();
+        } else {
+            ret = "";
+        }
+
+        if (!ret.isEmpty()) {
+            ret += ", ";
+        }
+
+        ret += data;
+
+        if (right != null) {
+            String rightData = right.inOrder();
+
+            if (!rightData.isEmpty()) {
+                ret += ", ";
+            }
+
+            ret += rightData;
+        }
+
+        return ret;
+    }
+
     /**
      * Insert a node as a child of this node.
      *
@@ -189,11 +217,17 @@ public class BST_Node {
             if (left.left == null && left.right == null) {
                 left = null;
             } else if (left.right != null) {
+                if (left.left == null) {
+                    left = left.right;
+
+                    return true;
+                }
+
                 BST_Node min = left.right.findMin();
                 left.right.removeNode(min.getData());
 
                 min.left = left.left;
-                min.right = left.right;
+                min.right = left.right == min ? null : left.right;
 
                 left = min;
             } else {
@@ -203,7 +237,7 @@ public class BST_Node {
             return true;
         }
 
-        return false;
+        return left.removeNode(s);
     }
 
     /**
@@ -222,13 +256,19 @@ public class BST_Node {
             if (right.left == null && right.right == null) {
                 right = null;
             } else if (right.left != null) {
-                BST_Node min = right.left.findMin();
-                right.left.removeNode(min.getData());
+                if (right.right == null) {
+                    right = right.left;
 
-                min.left = right.left;
-                min.right = right.right;
+                    return true;
+                }
 
-                right = min;
+                BST_Node max = right.left.findMax();
+                right.left.removeNode(max.getData());
+
+                max.left = right.left == max ? null : right.left;
+                max.right = right.right;
+
+                right = max;
             } else {
                 right = right.right;
             }
@@ -236,6 +276,6 @@ public class BST_Node {
             return true;
         }
 
-        return false;
+        return right.removeNode(s);
     }
 }
