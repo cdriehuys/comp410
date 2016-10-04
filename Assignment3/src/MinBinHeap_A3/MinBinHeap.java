@@ -24,9 +24,16 @@ public class MinBinHeap implements Heap_Interface {
 
     }
 
+    /**
+     * Get the minimum value from the heap.
+     *
+     * This is always the value at index 1.
+     * @return The {@code EntryPair} that has the minimum value in the
+     *         heap.
+     */
     @Override
     public EntryPair getMin() {
-        return null;
+        return array[1];
     }
 
     @Override
@@ -43,5 +50,9 @@ public class MinBinHeap implements Heap_Interface {
     @Override
     public EntryPair[] getHeap() {
         return this.array;
+    }
+
+    public void setArrayAt(int index, EntryPair pair) {
+        array[index] = pair;
     }
 }
