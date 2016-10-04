@@ -11,4 +11,9 @@ public class EntryPair implements EntryPair_Interface {
 
     public String getValue() { return value; }
     public int getPriority() { return priority; }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

@@ -9,19 +9,43 @@ public class MinBinHeap implements Heap_Interface {
 
     public MinBinHeap() {
         this.array = new EntryPair[arraySize];
-        array[0] = new EntryPair(null, -100000); //0th will be unused for simplicity
-        //of child/parent computations...
-        //the book/animation page both do this.
+        array[0] = new EntryPair(null, -100000);
+        size = 0;
     }
 
     @Override
     public void insert(EntryPair entry) {
+        // hole at current size & increment size for this insert
+        int hole = ++size;
 
+        // Percolate hole up while the entry to be inserted has a lower
+        // priority value than its parent.
+        while (compareEntries(entry, array[hole / 2]) < 0) {
+            array[hole] = array[hole / 2];
+
+            hole /= 2;
+
+            // Break out at this point because it means the entry being
+            // inserted is the new root node.
+            if (hole == 1) {
+                break;
+            }
+        }
+
+        // We've found the spot where our new entry goes, so assign it.
+        array[hole] = entry;
     }
 
     @Override
     public void delMin() {
+        if (array[1] == null) {
+            return;
+        }
 
+        EntryPair minEntry = getMin();
+        array[1] = array[size--];
+
+        percolateDown(1);
     }
 
     /**
@@ -38,12 +62,21 @@ public class MinBinHeap implements Heap_Interface {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public void build(EntryPair[] entries) {
+        int i = 1;
+        for (EntryPair entry : entries) {
+            array[i++] = entry;
+        }
 
+        size = entries.length;
+
+        for (int j = size / 2; j > 0; j--) {
+            percolateDown(j);
+        }
     }
 
     //Please do not remove or modify this method! Used to test your entire Heap.
@@ -54,5 +87,32 @@ public class MinBinHeap implements Heap_Interface {
 
     public void setArrayAt(int index, EntryPair pair) {
         array[index] = pair;
+    }
+
+    private int compareEntries(EntryPair e1, EntryPair e2) {
+        return e1.getPriority() - e2.getPriority();
+    }
+
+    private void percolateDown(int hole) {
+        int child;
+        EntryPair tmp = array[hole];
+
+        while (hole * 2 <= size) {
+            child = hole * 2;
+
+            if (compareEntries(array[child + 1], array[child]) < 0) {
+                child++;
+            }
+
+            if (compareEntries(array[child], tmp) < 0) {
+                array[hole] = array[child];
+            } else {
+                break;
+            }
+
+            hole = child;
+        }
+
+        array[hole] = tmp;
     }
 }
