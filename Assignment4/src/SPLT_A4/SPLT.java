@@ -79,9 +79,15 @@ public class SPLT implements SPLT_Interface{
         }
     }
 
+    /**
+     * Remove a value from the tree.
+     * @param s The value to remove from the tree.
+     */
     @Override
     public void remove(String s) {
-
+        if (root != null) {
+            root.removeNode(s);
+        }
     }
 
     @Override
