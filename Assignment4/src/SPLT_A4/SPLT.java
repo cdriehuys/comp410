@@ -18,9 +18,15 @@ public class SPLT implements SPLT_Interface{
         return root != null && root.containsNode(s);
     }
 
+    /**
+     * Determine if the tree is empty.
+     *
+     * An empty tree is defined as a tree with no root node.
+     * @return {@code true} if the tree is empty, {@code false} otherwise.
+     */
     @Override
     public boolean empty() {
-        return false;
+        return root == null;
     }
 
     @Override
