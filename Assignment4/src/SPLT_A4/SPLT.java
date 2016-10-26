@@ -15,11 +15,11 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public boolean contains(String s) {
-        if (root == null) {
+        if (getRoot() == null) {
             return false;
         }
 
-        BST_Node result = root.containsNode(s);
+        BST_Node result = getRoot().containsNode(s);
         splay(result);
 
         return result.getData().equals(s);
@@ -33,7 +33,7 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public boolean empty() {
-        return root == null;
+        return getRoot() == null;
     }
 
     /**
@@ -42,11 +42,11 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public String findMax() {
-        if (root == null) {
+        if (getRoot() == null) {
             return null;
         }
 
-        BST_Node max = root.findMax();
+        BST_Node max = getRoot().findMax();
         splay(max);
 
         return max.getData();
@@ -58,11 +58,11 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public String findMin() {
-        if (root == null) {
+        if (getRoot() == null) {
             return null;
         }
 
-        BST_Node min = root.findMin();
+        BST_Node min = getRoot().findMin();
         splay(min);
 
         return min.getData();
@@ -84,7 +84,7 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public int height() {
-        return root == null ? -1 : root.getHeight();
+        return getRoot() == null ? -1 : getRoot().getHeight();
     }
 
     /**
@@ -93,8 +93,8 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public void insert(String s) {
-        if (root == null) {
-            root = new BST_Node(s);
+        if (getRoot() == null) {
+            setRoot(new BST_Node(s));
 
             size++;
 
@@ -104,7 +104,7 @@ public class SPLT implements SPLT_Interface{
             return;
         }
 
-        BST_Node inserted = root.insertNode(s);
+        BST_Node inserted = getRoot().insertNode(s);
         if (inserted.getJustMade()) {
             size++;
             inserted.setJustMade(false);
@@ -156,6 +156,10 @@ public class SPLT implements SPLT_Interface{
         }
     }
 
+    /**
+     * Set the root of the current tree.
+     * @param node The node to set as the root of the tree.
+     */
     public void setRoot(BST_Node node) {
         root = node;
 
@@ -173,18 +177,35 @@ public class SPLT implements SPLT_Interface{
         return size;
     }
 
-    private void rotateLeft(BST_Node node) {
-        BST_Node nodeParent = node.getParent();
-        BST_Node child = node.getRight();
-        if (nodeParent != null) {
-            if (node == nodeParent.getRight()) {
-                nodeParent.setRight(child);
+    /**
+     * Swap a parent node with its child node, maintaining sidedness.
+     *
+     * Example: parent is left child, child will be swapping in as left child of grandparent.
+     * @param parent The parent node to swap out.
+     * @param child The child node to swap in.
+     */
+    private void parentChildSwap(BST_Node parent, BST_Node child) {
+        BST_Node grandparent = parent.getParent();
+
+        if (grandparent != null) {
+            if (parent == grandparent.getRight()) {
+                grandparent.setRight(child);
             } else {
-                nodeParent.setLeft(child);
+                grandparent.setLeft(child);
             }
         } else {
             child.setParent(null);
         }
+    }
+
+    /**
+     * Rotate left at the given node, bringing its right child up to replace it.
+     * @param node The node to rotate at.
+     */
+    private void rotateLeft(BST_Node node) {
+        BST_Node child = node.getRight();
+
+        parentChildSwap(node, child);
 
         node.setRight(child.getLeft());
         child.setLeft(node);
@@ -194,18 +215,14 @@ public class SPLT implements SPLT_Interface{
         }
     }
 
+    /**
+     * Rotate right at the given node, bringing its left child up to replace it.
+     * @param node The node to rotate at.
+     */
     private void rotateRight(BST_Node node) {
-        BST_Node nodeParent = node.getParent();
         BST_Node child = node.getLeft();
-        if (nodeParent != null) {
-            if (node == nodeParent.getRight()) {
-                nodeParent.setRight(child);
-            } else {
-                nodeParent.setLeft(child);
-            }
-        } else {
-            child.setParent(null);
-        }
+
+        parentChildSwap(node, child);
 
         node.setLeft(child.getRight());
         child.setRight(node);
@@ -219,7 +236,7 @@ public class SPLT implements SPLT_Interface{
      * Splay the tree to move the specified node to the root.
      * @param node The node to move to the root of the tree.
      */
-    protected void splay(BST_Node node) {
+    private void splay(BST_Node node) {
         // 4 Cases:
 
         // Case 1: Node is root already, we can exit
