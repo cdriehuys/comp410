@@ -79,8 +79,10 @@ public class SPLT implements SPLT_Interface{
             return;
         }
 
-        if (root.insertNode(s)) {
+        BST_Node inserted = root.insertNode(s);
+        if (inserted.getJustMade()) {
             size++;
+            splay(inserted);
         }
     }
 
@@ -97,6 +99,10 @@ public class SPLT implements SPLT_Interface{
         }
     }
 
+    public void setRoot(BST_Node node) {
+        root = node;
+    }
+
     /**
      * Get the size of the tree.
      * @return The number of elements in the tree.
@@ -106,4 +112,92 @@ public class SPLT implements SPLT_Interface{
         return size;
     }
 
+    private void rotateLeft(BST_Node node) {
+        BST_Node nodeParent = node.getParent();
+        BST_Node child = node.getRight();
+        if (nodeParent != null) {
+            if (node == nodeParent.getRight()) {
+                nodeParent.setRight(child);
+            } else {
+                nodeParent.setLeft(child);
+            }
+        }
+        child.setParent(nodeParent);
+
+        node.setRight(child.getLeft());
+        node.setParent(child);
+        child.setLeft(node);
+
+        if (child.getParent() == null) {
+            root = child;
+        }
+    }
+
+    private void rotateRight(BST_Node node) {
+        BST_Node nodeParent = node.getParent();
+        BST_Node child = node.getLeft();
+        if (nodeParent != null) {
+            if (node == nodeParent.getRight()) {
+                nodeParent.setRight(child);
+            } else {
+                nodeParent.setLeft(child);
+            }
+        }
+        child.setParent(nodeParent);
+
+        node.setLeft(child.getRight());
+        node.setParent(child);
+        child.setRight(node);
+
+        if (child.getParent() == null) {
+            root = child;
+        }
+    }
+
+    /**
+     * Splay the tree to move the specified node to the root.
+     * @param node The node to move to the root of the tree.
+     */
+    protected void splay(BST_Node node) {
+        // 4 Cases:
+
+        // Case 1: Node is root already, we can exit
+        if (root.equals(node)) {
+            return;
+        }
+
+        BST_Node parent = node.getParent();
+
+        // Case 2: Node's parent is root, we do a simple rotation
+        if (parent.equals(root)) {
+            // Rotation direction depends on which child `node` is.
+            if (node.equals(parent.getRight())) {
+                rotateLeft(parent);
+            } else {
+                rotateRight(parent);
+            }
+
+            return;
+        }
+
+        BST_Node grandparent = parent.getParent();
+
+        // Case 3: Node and parent are both the same side child (eg left and left). Zig-zig or zag-zag.
+        if (parent.equals(grandparent.getLeft()) && node.equals(parent.getLeft())) {
+            rotateRight(grandparent);
+            rotateRight(parent);
+        } else if (parent.equals(grandparent.getRight()) && node.equals(parent.getRight())) {
+            rotateLeft(grandparent);
+            rotateLeft(parent);
+        }
+
+        // Case 4: Node and parent are opposite children (eg left and right). Zig-zag or zag-zig.
+        if (parent.equals(grandparent.getLeft()) && node.equals(parent.getRight())) {
+            rotateLeft(parent);
+            rotateRight(grandparent);
+        } else if (parent.equals(grandparent.getRight()) && node.equals(parent.getLeft())) {
+            rotateRight(parent);
+            rotateLeft(grandparent);
+        }
+    }
 }

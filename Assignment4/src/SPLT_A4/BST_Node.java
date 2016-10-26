@@ -11,14 +11,25 @@ public class BST_Node {
 
     BST_Node(String data){
         this.data=data;
+        justMade = true;
     }
 
     public String getData(){
         return data;
     }
+
+    public boolean getJustMade() {
+        return justMade;
+    }
+
     public BST_Node getLeft(){
         return left;
     }
+
+    public BST_Node getParent() {
+        return parent;
+    }
+
     public BST_Node getRight(){
         return right;
     }
@@ -35,22 +46,33 @@ public class BST_Node {
         }
         return false; //shouldn't hit
     }
-    public boolean insertNode(String s){
+
+    public boolean equals(BST_Node other) {
+        if (other == null) {
+            return false;
+        }
+
+        return this.getData().equals(other.getData());
+    }
+
+    public BST_Node insertNode(String s){
         if(data.compareTo(s)>0){
             if(left==null){
                 left=new BST_Node(s);
-                return true;
+                left.parent = this;
+                return left;
             }
             return left.insertNode(s);
         }
         if(data.compareTo(s)<0){
             if(right==null){
                 right=new BST_Node(s);
-                return true;
+                right.parent = this;
+                return right;
             }
             return right.insertNode(s);
         }
-        return false;//ie we have a duplicate
+        return null;//ie we have a duplicate
     }
     public boolean removeNode(String s){
         if(data==null)return false;
@@ -82,6 +104,23 @@ public class BST_Node {
         }
         return false;
     }
+
+    public void setJustMade(boolean newVal) {
+        justMade = newVal;
+    }
+
+    public void setLeft(BST_Node node) {
+        left = node;
+    }
+
+    public void setParent(BST_Node node) {
+        parent = node;
+    }
+
+    public void setRight(BST_Node node) {
+        right = node;
+    }
+
     public BST_Node findMin(){
         if(left!=null)return left.findMin();
         return this;
@@ -100,9 +139,4 @@ public class BST_Node {
     public String toString(){
         return "Data: "+this.data+", Left: "+((this.left!=null)?left.data:"null")+",Right: "+((this.right!=null)?right.data:"null");
     }
-
-    private void splay(BST_Node nodeToSplay) {
-        // TODO: Implement splay
-    }
-
 }
