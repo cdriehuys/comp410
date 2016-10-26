@@ -66,9 +66,17 @@ public class SPLT implements SPLT_Interface{
         return root == null ? -1 : root.getHeight();
     }
 
+    /**
+     * Insert a value into the tree.
+     * @param s The value to insert into the tree.
+     */
     @Override
     public void insert(String s) {
-
+        if (root == null) {
+            root = new BST_Node(s);
+        } else {
+            root.insertNode(s);
+        }
     }
 
     @Override
