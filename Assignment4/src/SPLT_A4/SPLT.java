@@ -8,9 +8,14 @@ public class SPLT implements SPLT_Interface{
         this.size = 0;
     }
 
+    /**
+     * Determine if a node is contained in the tree.
+     * @param s The data to check for in the tree.
+     * @return {@code true}i f there is a node in the tree with the data {@code s}, {@code false} otherwise.
+     */
     @Override
     public boolean contains(String s) {
-        return false;
+        return root != null && root.containsNode(s);
     }
 
     @Override
