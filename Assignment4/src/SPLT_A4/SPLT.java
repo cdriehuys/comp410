@@ -47,7 +47,11 @@ public class SPLT implements SPLT_Interface{
         return root == null ? null : root.findMin().getData();
     }
 
-    public BST_Node getRoot() { //please keep this in here! I need your root node to test your tree!
+    /**
+     * Get the root node of the tree.
+     * @return The root node of the tree.
+     */
+    public BST_Node getRoot() {
         return root;
     }
 
