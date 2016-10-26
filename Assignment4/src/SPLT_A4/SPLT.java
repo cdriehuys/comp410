@@ -95,7 +95,11 @@ public class SPLT implements SPLT_Interface{
     public void insert(String s) {
         if (root == null) {
             root = new BST_Node(s);
+
             size++;
+
+            // Size has accounted for new element, so set justMade to false
+            getRoot().setJustMade(false);
 
             return;
         }
@@ -103,8 +107,10 @@ public class SPLT implements SPLT_Interface{
         BST_Node inserted = root.insertNode(s);
         if (inserted.getJustMade()) {
             size++;
-            splay(inserted);
+            inserted.setJustMade(false);
         }
+
+        splay(inserted);
     }
 
     /**

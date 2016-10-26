@@ -62,7 +62,13 @@ public class BST_Node {
     }
 
     public BST_Node insertNode(String s){
-        if(data.compareTo(s)>0){
+        int comparison = data.compareTo(s);
+
+        if (comparison == 0) {
+            return this;
+        }
+
+        if(comparison > 0){
             if(left==null){
                 left=new BST_Node(s);
                 left.parent = this;
@@ -70,7 +76,7 @@ public class BST_Node {
             }
             return left.insertNode(s);
         }
-        if(data.compareTo(s)<0){
+        if(comparison < 0){
             if(right==null){
                 right=new BST_Node(s);
                 right.parent = this;
@@ -78,7 +84,9 @@ public class BST_Node {
             }
             return right.insertNode(s);
         }
-        return null;//ie we have a duplicate
+
+        // Wut? How did we get here.
+        return null;
     }
     public boolean removeNode(String s){
         if(data==null)return false;
