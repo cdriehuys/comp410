@@ -74,8 +74,13 @@ public class SPLT implements SPLT_Interface{
     public void insert(String s) {
         if (root == null) {
             root = new BST_Node(s);
-        } else {
-            root.insertNode(s);
+            size++;
+
+            return;
+        }
+
+        if (root.insertNode(s)) {
+            size++;
         }
     }
 
@@ -86,13 +91,19 @@ public class SPLT implements SPLT_Interface{
     @Override
     public void remove(String s) {
         if (root != null) {
-            root.removeNode(s);
+            if (root.removeNode(s)) {
+                size--;
+            }
         }
     }
 
+    /**
+     * Get the size of the tree.
+     * @return The number of elements in the tree.
+     */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
 }
