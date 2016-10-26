@@ -29,14 +29,22 @@ public class SPLT implements SPLT_Interface{
         return root == null;
     }
 
+    /**
+     * Find the maximum value in the tree.
+     * @return The largest value in the tree.
+     */
     @Override
     public String findMax() {
-        return null;
+        return root == null ? null : root.findMax().getData();
     }
 
+    /**
+     * Find the minimum value in the tree.
+     * @return The smallest value in the tree.
+     */
     @Override
     public String findMin() {
-        return null;
+        return root == null ? null : root.findMin().getData();
     }
 
     public BST_Node getRoot() { //please keep this in here! I need your root node to test your tree!
