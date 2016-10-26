@@ -15,7 +15,14 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public boolean contains(String s) {
-        return root != null && root.containsNode(s);
+        if (root == null) {
+            return false;
+        }
+
+        BST_Node result = root.containsNode(s);
+        splay(result);
+
+        return result.getData().equals(s);
     }
 
     /**
@@ -35,7 +42,14 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public String findMax() {
-        return root == null ? null : root.findMax().getData();
+        if (root == null) {
+            return null;
+        }
+
+        BST_Node max = root.findMax();
+        splay(max);
+
+        return max.getData();
     }
 
     /**
@@ -44,7 +58,14 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public String findMin() {
-        return root == null ? null : root.findMin().getData();
+        if (root == null) {
+            return null;
+        }
+
+        BST_Node min = root.findMin();
+        splay(min);
+
+        return min.getData();
     }
 
     /**
@@ -92,15 +113,49 @@ public class SPLT implements SPLT_Interface{
      */
     @Override
     public void remove(String s) {
-        if (root != null) {
-            if (root.removeNode(s)) {
-                size--;
-            }
+        if (getRoot() == null) {
+            return;
+        }
+
+        // Check if the value to remove exists in the tree.
+        if (!contains(s)) {
+            return;
+        }
+
+        // The value exists, and it is now at the root of the tree.
+        size--;
+
+        // Attempt to use the max of the left subtree as the new root. If it doesn't exist, use the min of the right
+        // subtree.
+        if (getRoot().getLeft() != null) {
+            SPLT leftTree = new SPLT();
+            leftTree.setRoot(getRoot().getLeft());
+
+            // This splays the max of the left tree to the top of the tree.
+            leftTree.findMax();
+
+            // Set up the new tree with the previous root removed
+            leftTree.getRoot().setRight(getRoot().getRight());
+            setRoot(leftTree.getRoot());
+        } else {
+            SPLT rightTree = new SPLT();
+            rightTree.setRoot(getRoot().getRight());
+
+            // Splay the min of the right tree to the top.
+            rightTree.findMin();
+
+            // Set up new tree with previous root removed. We also know that there is no left subtree, so we can ignore
+            // it.
+            setRoot(rightTree.getRoot());
         }
     }
 
     public void setRoot(BST_Node node) {
         root = node;
+
+        if (root != null) {
+            root.setParent(null);
+        }
     }
 
     /**
@@ -121,15 +176,15 @@ public class SPLT implements SPLT_Interface{
             } else {
                 nodeParent.setLeft(child);
             }
+        } else {
+            child.setParent(null);
         }
-        child.setParent(nodeParent);
 
         node.setRight(child.getLeft());
-        node.setParent(child);
         child.setLeft(node);
 
         if (child.getParent() == null) {
-            root = child;
+            setRoot(child);
         }
     }
 
@@ -142,15 +197,15 @@ public class SPLT implements SPLT_Interface{
             } else {
                 nodeParent.setLeft(child);
             }
+        } else {
+            child.setParent(null);
         }
-        child.setParent(nodeParent);
 
         node.setLeft(child.getRight());
-        node.setParent(child);
         child.setRight(node);
 
         if (child.getParent() == null) {
-            root = child;
+            setRoot(child);
         }
     }
 
@@ -198,6 +253,11 @@ public class SPLT implements SPLT_Interface{
         } else if (parent.equals(grandparent.getRight()) && node.equals(parent.getLeft())) {
             rotateRight(parent);
             rotateLeft(grandparent);
+        }
+
+        // If the node is not the root, do it again
+        if (!node.equals(getRoot())) {
+            splay(node);
         }
     }
 }

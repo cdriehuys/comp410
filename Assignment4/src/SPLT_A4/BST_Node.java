@@ -34,17 +34,23 @@ public class BST_Node {
         return right;
     }
 
-    public boolean containsNode(String s){
-        if(data.equals(s))return true;
-        if(data.compareTo(s)>0){//s lexiconically less than data
-            if(left==null)return false;
+    /**
+     * Search for a node with the given value in the subtree rooted at this node.
+     * @param s The data to search for.
+     * @return The node with the data matching what was given if it exists. Otherwise, the last searched node is
+     *         returned.
+     */
+    public BST_Node containsNode(String s){
+        if(data.equals(s))return this;
+        if(data.compareTo(s)>0){//s lexicographically less than data
+            if(left==null)return this;
             return left.containsNode(s);
         }
         if(data.compareTo(s)<0){
-            if(right==null)return false;
+            if(right==null)return this;
             return right.containsNode(s);
         }
-        return false; //shouldn't hit
+        return this;
     }
 
     public boolean equals(BST_Node other) {
@@ -111,6 +117,10 @@ public class BST_Node {
 
     public void setLeft(BST_Node node) {
         left = node;
+
+        if (left != null) {
+            left.parent = this;
+        }
     }
 
     public void setParent(BST_Node node) {
@@ -119,6 +129,10 @@ public class BST_Node {
 
     public void setRight(BST_Node node) {
         right = node;
+
+        if (right != null) {
+            right.parent = this;
+        }
     }
 
     public BST_Node findMin(){
