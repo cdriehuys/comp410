@@ -55,9 +55,15 @@ public class SPLT implements SPLT_Interface{
         return root;
     }
 
+    /**
+     * Get the height of the tree.
+     *
+     * Note that the height of an empty tree is -1.
+     * @return The height of the tree.
+     */
     @Override
     public int height() {
-        return 0;
+        return root == null ? -1 : root.getHeight();
     }
 
     @Override
