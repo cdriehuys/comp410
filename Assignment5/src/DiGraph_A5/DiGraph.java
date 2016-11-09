@@ -92,6 +92,24 @@ public class DiGraph implements DiGraph_Interface {
 
     @Override
     public boolean delEdge(String sLabel, String dLabel) {
+        Node head = nodes.get(dLabel);
+        Node tail = nodes.get(sLabel);
+
+        if (head == null || tail == null) {
+            return false;
+        }
+
+        ArrayList<Edge> edgeSet = edges.get(tail);
+
+        for (Edge edge : edgeSet) {
+            if (edge.getHead().equals(head) && edge.getTail().equals(tail)) {
+                edgeIds.remove(edge.getId());
+                edgeSet.remove(edge);
+
+                return true;
+            }
+        }
+
         return false;
     }
 
