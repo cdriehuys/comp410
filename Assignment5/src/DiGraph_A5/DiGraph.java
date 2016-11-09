@@ -1,39 +1,68 @@
 package DiGraph_A5;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiGraph implements DiGraph_Interface {
-    private ArrayList<Long> usedIds;
+    private ArrayList<Long> edgeIds;
+    private ArrayList<Long> nodeIds;
 
     private HashMap<String, Node> nodes;
+    private HashMap<Node, ArrayList<Edge>> edges;
 
     // in here go all your data and methods for the graph
     // and the topo sort operation
 
     public DiGraph ( ) {
+        edges = new HashMap<>();
         nodes = new HashMap<>();
-        usedIds = new ArrayList<Long>();
+
+        edgeIds = new ArrayList<>();
+        nodeIds = new ArrayList<>();
     }
 
     @Override
     public boolean addNode(long idNum, String label) {
         if (nodes.containsKey(label)
                 || idNum < 0
-                || usedIds.contains(idNum)) {
+                || nodeIds.contains(idNum)) {
             return false;
         }
 
         Node n = new Node(idNum, label);
         nodes.put(label, n);
-        usedIds.add(idNum);
+        edges.put(n, new ArrayList<>());
+        nodeIds.add(idNum);
 
         return true;
     }
 
     @Override
     public boolean addEdge(long idNum, String sLabel, String dLabel, long weight, String eLabel) {
-        return false;
+        if (edgeIds.contains(idNum)) {
+            return false;
+        }
+
+        Node tail = nodes.get(sLabel);
+        Node head = nodes.get(dLabel);
+
+        if (tail == null || head == null) {
+            return false;
+        }
+
+        ArrayList<Edge> nodeEdges = edges.get(tail);
+
+        for (Edge e : nodeEdges) {
+            if (e.getTail().equals(tail) && e.getHead().equals(head)) {
+                return false;
+            }
+        }
+
+        nodeEdges.add(new Edge(idNum, tail, head, weight, eLabel));
+        edgeIds.add(idNum);
+
+        return true;
     }
 
     @Override
