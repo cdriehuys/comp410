@@ -8,7 +8,7 @@ package DiGraph_A5;
  *
  */
 
-public interface DiGraphInterface {
+public interface DiGraph_Interface {
   /*
     Interface: A DIGRAPH will provide this collection of operations:
 

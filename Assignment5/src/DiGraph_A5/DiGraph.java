@@ -1,18 +1,31 @@
 package DiGraph_A5;
-public class DiGraph implements DiGraphInterface {
+
+import java.util.HashMap;
+
+public class DiGraph implements DiGraph_Interface {
+    private HashMap<String, Node> nodes;
 
     // in here go all your data and methods for the graph
     // and the topo sort operation
 
-    public DiGraph ( ) { // default constructor
-        // explicitly include this
-        // we need to have the default constructor
-        // if you then write others, this one will still be there
+    public DiGraph ( ) {
+        nodes = new HashMap<>();
     }
 
     @Override
     public boolean addNode(long idNum, String label) {
-        return false;
+        if (idNum < 0) {
+            throw new IllegalArgumentException("idNum must be greater than or equal to 0.");
+        }
+
+        if (nodes.containsKey(label)) {
+            return false;
+        }
+
+        Node n = new Node(idNum, label);
+        nodes.put(label, n);
+
+        return true;
     }
 
     @Override
