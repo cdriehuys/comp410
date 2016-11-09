@@ -1,8 +1,11 @@
 package DiGraph_A5;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiGraph implements DiGraph_Interface {
+    private ArrayList<Long> usedIds;
+
     private HashMap<String, Node> nodes;
 
     // in here go all your data and methods for the graph
@@ -10,20 +13,20 @@ public class DiGraph implements DiGraph_Interface {
 
     public DiGraph ( ) {
         nodes = new HashMap<>();
+        usedIds = new ArrayList<Long>();
     }
 
     @Override
     public boolean addNode(long idNum, String label) {
-        if (idNum < 0) {
-            throw new IllegalArgumentException("idNum must be greater than or equal to 0.");
-        }
-
-        if (nodes.containsKey(label)) {
+        if (nodes.containsKey(label)
+                || idNum < 0
+                || usedIds.contains(idNum)) {
             return false;
         }
 
         Node n = new Node(idNum, label);
         nodes.put(label, n);
+        usedIds.add(idNum);
 
         return true;
     }

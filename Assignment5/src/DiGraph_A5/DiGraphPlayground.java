@@ -1,5 +1,7 @@
 package DiGraph_A5;
 
+import org.junit.Assert;
+
 public class DiGraphPlayground {
 
     public static void main (String[] args) {
@@ -13,7 +15,12 @@ public class DiGraphPlayground {
         //    -- etc.
         // in order to convince yourself your code is producing
         // the correct behavior
-        exTest();
+        //exTest();
+
+        DiGraph graph = new DiGraph();
+        graph.addNode(1, "f");
+
+        Assert.assertFalse(graph.addNode(1, "e"));
     }
 
     public static void exTest(){
