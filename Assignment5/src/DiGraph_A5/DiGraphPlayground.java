@@ -18,9 +18,18 @@ public class DiGraphPlayground {
         //exTest();
 
         DiGraph graph = new DiGraph();
-        graph.addNode(1, "f");
+        graph.addNode(0, "a");
+        graph.addNode(1, "b");
+        graph.addNode(2, "c");
+        graph.addNode(3, "d");
 
-        Assert.assertFalse(graph.addNode(1, "e"));
+        graph.addEdge(0, "a", "b", 0, null);
+        graph.addEdge(1, "b", "c", 0, null);
+        graph.addEdge(2, "c", "d", 0, null);
+
+        String[] sorted = graph.topoSort();
+
+        Assert.assertArrayEquals(new String[] {"a", "b", "c", "d"}, sorted);
     }
 
     public static void exTest(){

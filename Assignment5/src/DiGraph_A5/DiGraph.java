@@ -1,8 +1,9 @@
 package DiGraph_A5;
 
-import java.lang.reflect.Array;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class DiGraph implements DiGraph_Interface {
     private ArrayList<Long> edgeIds;
@@ -20,6 +21,14 @@ public class DiGraph implements DiGraph_Interface {
 
         edgeIds = new ArrayList<>();
         nodeIds = new ArrayList<>();
+    }
+
+    public DiGraph(DiGraph graph) {
+        edges = graph.edges;
+        nodes = graph.nodes;
+
+        edgeIds = graph.edgeIds;
+        nodeIds = graph.nodeIds;
     }
 
     @Override
@@ -60,6 +69,7 @@ public class DiGraph implements DiGraph_Interface {
         }
 
         nodeEdges.add(new Edge(idNum, tail, head, weight, eLabel));
+        head.setIndegree(head.getIndegree() + 1);
         edgeIds.add(idNum);
 
         return true;
@@ -73,13 +83,9 @@ public class DiGraph implements DiGraph_Interface {
             return false;
         }
 
-        for (ArrayList<Edge> edgeSet : edges.values()) {
-            for (Edge edge : edgeSet) {
-                if (edge.getHead().equals(node) || edge.getTail().equals(node)) {
-                    edgeIds.remove(edge.getId());
-                    edgeSet.remove(edge);
-                }
-            }
+        for (Node n : nodes.values()) {
+            delEdge(n.getLabel(), node.getLabel());
+            delEdge(node.getLabel(), n.getLabel());
         }
 
         edges.remove(node);
@@ -103,6 +109,9 @@ public class DiGraph implements DiGraph_Interface {
 
         for (Edge edge : edgeSet) {
             if (edge.getHead().equals(head) && edge.getTail().equals(tail)) {
+                Node node = edge.getHead();
+                node.setIndegree(node.getIndegree() - 1);
+
                 edgeIds.remove(edge.getId());
                 edgeSet.remove(edge);
 
@@ -131,8 +140,46 @@ public class DiGraph implements DiGraph_Interface {
 
     @Override
     public String[] topoSort() {
-        return new String[0];
+        Iterator<Node> nodeIterator = new ZeroIndegreeIterator(new DiGraph(this));
+        ArrayList<String> sorted = new ArrayList<>();
+
+        while (nodeIterator.hasNext()) {
+            sorted.add(nodeIterator.next().getLabel());
+        }
+
+        return sorted.toArray(new String[sorted.size()]);
     }
 
-    // rest of your code to implement the various operations
+    private class ZeroIndegreeIterator implements Iterator<Node> {
+        private ArrayDeque<Node> zeroIndegreeNodes;
+
+        private DiGraph graph;
+
+        ZeroIndegreeIterator(DiGraph graph) {
+            this.graph = graph;
+
+            zeroIndegreeNodes = new ArrayDeque<>();
+        }
+
+        public boolean hasNext() {
+            return graph.nodes.size() != 0;
+        }
+
+        public Node next() {
+            if (zeroIndegreeNodes.size() != 0) {
+                Node node = zeroIndegreeNodes.removeFirst();
+                graph.delNode(node.getLabel());
+
+                return node;
+            }
+
+            for (Node node : graph.nodes.values()) {
+                if (node.getIndegree() == 0) {
+                    zeroIndegreeNodes.push(node);
+                }
+            }
+
+            return next();
+        }
+    }
 }

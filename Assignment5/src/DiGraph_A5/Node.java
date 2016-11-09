@@ -1,6 +1,8 @@
 package DiGraph_A5;
 
 public class Node {
+    private int indegree;
+
     private long id;
 
     private String label;
@@ -14,7 +16,15 @@ public class Node {
         return id;
     }
 
+    public int getIndegree() {
+        return indegree;
+    }
+
     public String getLabel() {
         return label;
+    }
+
+    public void setIndegree(int newIndegree) {
+        indegree = newIndegree;
     }
 }
