@@ -25,6 +25,10 @@ public class Edge {
         return head;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public Node getTail() {
         return tail;
     }

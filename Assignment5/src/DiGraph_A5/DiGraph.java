@@ -67,7 +67,27 @@ public class DiGraph implements DiGraph_Interface {
 
     @Override
     public boolean delNode(String label) {
-        return false;
+        Node node = nodes.get(label);
+
+        if (node == null) {
+            return false;
+        }
+
+        for (ArrayList<Edge> edgeSet : edges.values()) {
+            for (Edge edge : edgeSet) {
+                if (edge.getHead().equals(node) || edge.getTail().equals(node)) {
+                    edgeIds.remove(edge.getId());
+                    edgeSet.remove(edge);
+                }
+            }
+        }
+
+        edges.remove(node);
+
+        nodeIds.remove(node.getId());
+        nodes.remove(node.getLabel());
+
+        return true;
     }
 
     @Override
