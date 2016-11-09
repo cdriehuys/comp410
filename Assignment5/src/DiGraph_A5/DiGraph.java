@@ -115,12 +115,18 @@ public class DiGraph implements DiGraph_Interface {
 
     @Override
     public long numNodes() {
-        return 0;
+        return nodes.size();
     }
 
     @Override
     public long numEdges() {
-        return 0;
+        int sum = 0;
+
+        for (ArrayList<Edge> edgeSet : edges.values()) {
+            sum += edgeSet.size();
+        }
+
+        return sum;
     }
 
     @Override
