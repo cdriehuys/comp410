@@ -16,13 +16,17 @@ public class DiGraphPlayground {
         // in order to convince yourself your code is producing
         // the correct behavior
         //exTest();
-        DiGraph g = new DiGraph();
-        g.addNode(0, "1");
-        g.addNode(1, "2");
-        g.addEdge(0, "1", "2", 0, null);
-        g.delEdge("1", "2");
-
         DiGraph graph = new DiGraph();
+        Assert.assertFalse(graph.delEdge("f", "s"));
+        graph.addNode(1, "f");
+        graph.addNode(3, "s");
+        graph.addEdge(0, "f", "s", 0, null);
+        Assert.assertTrue(graph.delEdge("f", "s"));
+        Assert.assertFalse(graph.delEdge("f", "s"));
+        Assert.assertTrue(graph.addEdge(0, "f", "s", 0, null));
+        Assert.assertTrue(graph.delEdge("f", "s"));
+
+        graph = new DiGraph();
         graph.addNode(0, "4");
         graph.addNode(1, "1");
         graph.addNode(2, "8");

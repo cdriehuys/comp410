@@ -9,11 +9,14 @@ import java.util.*;
 public class DiGraph implements DiGraph_Interface {
     private ArrayDeque<Node> zeroIndegreeNodes;
 
+    private HashMap<String, Node> nodes;
+    private HashMap<Node, ArrayList<Edge>> edges;
+
     private HashSet<Long> edgeIds;
     private HashSet<Long> nodeIds;
 
-    private HashMap<String, Node> nodes;
-    private HashMap<Node, ArrayList<Edge>> edges;
+    private long numEdges;
+    private long numNodes;
 
     /**
      * Create a new directed graph.
@@ -26,6 +29,9 @@ public class DiGraph implements DiGraph_Interface {
 
         edgeIds = new HashSet<>();
         nodeIds = new HashSet<>();
+
+        numEdges = 0;
+        numNodes = 0;
     }
 
     /**
@@ -40,6 +46,9 @@ public class DiGraph implements DiGraph_Interface {
 
         edgeIds = new HashSet<>(graph.edgeIds);
         nodeIds = new HashSet<>(graph.nodeIds);
+
+        numEdges = graph.numEdges;
+        numNodes = graph.numNodes;
     }
 
     /**
@@ -73,6 +82,8 @@ public class DiGraph implements DiGraph_Interface {
         // A new node has nothing pointing to it, so it automatically
         // has an indegree of zero.
         zeroIndegreeNodes.push(n);
+
+        numNodes++;
 
         return true;
     }
@@ -120,12 +131,12 @@ public class DiGraph implements DiGraph_Interface {
         tail.addEdge(edge);
         head.addEdge(edge);
 
-        // Increment indegree
         if (zeroIndegreeNodes.contains(head)) {
             zeroIndegreeNodes.remove(head);
         }
 
         edgeIds.add(idNum);
+        numEdges++;
 
         return true;
     }
@@ -150,10 +161,12 @@ public class DiGraph implements DiGraph_Interface {
 
         for (Node tail : node.getInEdges().keySet()) {
             tail.removeOutEdge(node);
+            numEdges--;
         }
 
         for (Node head : node.getOutEdges().keySet()) {
             head.removeInEdge(node);
+            numEdges--;
 
             if (head.getIndegree() == 0) {
                 zeroIndegreeNodes.push(head);
@@ -164,6 +177,8 @@ public class DiGraph implements DiGraph_Interface {
 
         nodeIds.remove(node.getId());
         nodes.remove(node.getLabel());
+
+        numNodes--;
 
         return true;
     }
@@ -198,6 +213,9 @@ public class DiGraph implements DiGraph_Interface {
             zeroIndegreeNodes.push(head);
         }
 
+        edgeIds.remove(edge.getId());
+        numEdges--;
+
         return true;
     }
 
@@ -207,7 +225,7 @@ public class DiGraph implements DiGraph_Interface {
      */
     @Override
     public long numNodes() {
-        return nodes.size();
+        return numNodes;
     }
 
     /**
@@ -216,13 +234,7 @@ public class DiGraph implements DiGraph_Interface {
      */
     @Override
     public long numEdges() {
-        int sum = 0;
-
-        for (ArrayList<Edge> edgeSet : edges.values()) {
-            sum += edgeSet.size();
-        }
-
-        return sum;
+        return numEdges;
     }
 
     /**
