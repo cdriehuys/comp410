@@ -1,17 +1,14 @@
 package DiGraph_A5;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * A {@code DiGraph} is a directed graph composed of {@link Node}s and
  * {@link Edge}s.
  */
 public class DiGraph implements DiGraph_Interface {
-    private ArrayList<Long> edgeIds;
-    private ArrayList<Long> nodeIds;
+    private HashSet<Long> edgeIds;
+    private HashSet<Long> nodeIds;
 
     private HashMap<String, Node> nodes;
     private HashMap<Node, ArrayList<Edge>> edges;
@@ -23,8 +20,8 @@ public class DiGraph implements DiGraph_Interface {
         edges = new HashMap<>();
         nodes = new HashMap<>();
 
-        edgeIds = new ArrayList<>();
-        nodeIds = new ArrayList<>();
+        edgeIds = new HashSet<>();
+        nodeIds = new HashSet<>();
     }
 
     /**
@@ -35,8 +32,8 @@ public class DiGraph implements DiGraph_Interface {
         edges = new HashMap<>(graph.edges);
         nodes = new HashMap<>(graph.nodes);
 
-        edgeIds = new ArrayList<>(graph.edgeIds);
-        nodeIds = new ArrayList<>(graph.nodeIds);
+        edgeIds = new HashSet<>(graph.edgeIds);
+        nodeIds = new HashSet<>(graph.nodeIds);
     }
 
     /**
