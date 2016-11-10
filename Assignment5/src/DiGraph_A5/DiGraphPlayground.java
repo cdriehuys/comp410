@@ -52,6 +52,26 @@ public class DiGraphPlayground {
         String[] sorted = graph.topoSort();
 
         Assert.assertArrayEquals(new String[] {"1", "4", "2", "8", "5", "7"}, sorted);
+
+        topoCase5();
+    }
+
+    public static void topoCase5() {
+        DiGraph graph = new DiGraph();
+        graph.addNode(1, "p");
+        graph.addNode(4, "a");
+        graph.addNode(3, "g");
+        graph.addNode(2, "e");
+        graph.addEdge(0, "p", "a", 0, null);
+        graph.addEdge(1, "a", "g", 0, null);
+        graph.addEdge(2, "g", "e", 0, null);
+        graph.addEdge(3, "e", "p", 0, null);
+        graph.addEdge(4, "p", "g", 0, null);
+        graph.addEdge(5, "a", "e", 0, null);
+
+        String[] sorted = graph.topoSort();
+
+        Assert.assertNull(sorted);
     }
 
     public static void exTest(){

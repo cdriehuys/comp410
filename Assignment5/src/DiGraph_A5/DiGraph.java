@@ -2,7 +2,6 @@ package DiGraph_A5;
 
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,8 +13,9 @@ import java.util.Iterator;
 public class DiGraph implements DiGraph_Interface {
     private ArrayDeque<Node> zeroIndegreeNodes;
 
+    private enum EdgeDelete {DEL_BOTH, DEL_HEAD, DEL_TAIL}
+
     private HashMap<String, Node> nodes;
-    private HashMap<Node, ArrayList<Edge>> edges;
 
     private HashSet<Long> edgeIds;
     private HashSet<Long> nodeIds;
@@ -29,7 +29,6 @@ public class DiGraph implements DiGraph_Interface {
     public DiGraph() {
         zeroIndegreeNodes = new ArrayDeque<>();
 
-        edges = new HashMap<>();
         nodes = new HashMap<>();
 
         edgeIds = new HashSet<>();
@@ -46,7 +45,6 @@ public class DiGraph implements DiGraph_Interface {
     public DiGraph(DiGraph graph) {
         zeroIndegreeNodes = new ArrayDeque<>(graph.zeroIndegreeNodes);
 
-        edges = new HashMap<>(graph.edges);
         nodes = new HashMap<>(graph.nodes);
 
         edgeIds = new HashSet<>(graph.edgeIds);
@@ -81,7 +79,6 @@ public class DiGraph implements DiGraph_Interface {
         // the adjacency list.
         Node n = new Node(idNum, label);
         nodes.put(label, n);
-        edges.put(n, new ArrayList<>());
         nodeIds.add(idNum);
 
         // A new node has nothing pointing to it, so it automatically
@@ -165,14 +162,12 @@ public class DiGraph implements DiGraph_Interface {
         }
 
         for (Node tail : node.getInEdges().keySet()) {
-            delEdge(tail, node);
+            delEdge(tail, node, EdgeDelete.DEL_TAIL);
         }
 
         for (Node head : node.getOutEdges().keySet()) {
-            delEdge(node, head);
+            delEdge(node, head, EdgeDelete.DEL_HEAD);
         }
-
-        edges.remove(node);
 
         nodeIds.remove(node.getId());
         nodes.remove(node.getLabel());
@@ -183,23 +178,7 @@ public class DiGraph implements DiGraph_Interface {
     }
 
     public boolean delEdge(Node tail, Node head) {
-        Edge edge = head.getInEdges().get(tail);
-
-        if (edge == null) {
-            return false;
-        }
-
-        head.removeEdge(edge);
-        tail.removeEdge(edge);
-
-        if (head.getIndegree() == 0) {
-            zeroIndegreeNodes.push(head);
-        }
-
-        edgeIds.remove(edge.getId());
-        numEdges--;
-
-        return true;
+        return delEdge(tail, head, EdgeDelete.DEL_BOTH);
     }
 
     /**
@@ -256,7 +235,7 @@ public class DiGraph implements DiGraph_Interface {
             Node next = nodeIterator.next();
 
             if (next == null) {
-                break;
+                return null;
             }
 
             sorted[i] = next.getLabel();
@@ -327,5 +306,32 @@ public class DiGraph implements DiGraph_Interface {
 
             return next();
         }
+    }
+
+    public boolean delEdge(Node tail, Node head, EdgeDelete deleteBehavior) {
+        Edge edge = head.getInEdges().get(tail);
+
+        if (edge == null) {
+            return false;
+        }
+
+        if (deleteBehavior == EdgeDelete.DEL_BOTH
+                || deleteBehavior == EdgeDelete.DEL_HEAD) {
+            head.removeEdge(edge);
+        }
+
+        if (deleteBehavior == EdgeDelete.DEL_BOTH
+                || deleteBehavior == EdgeDelete.DEL_TAIL) {
+            tail.removeEdge(edge);
+        }
+
+        if (head.getIndegree() == 0) {
+            zeroIndegreeNodes.push(head);
+        }
+
+        edgeIds.remove(edge.getId());
+        numEdges--;
+
+        return true;
     }
 }
