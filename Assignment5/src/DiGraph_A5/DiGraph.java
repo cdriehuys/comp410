@@ -160,17 +160,11 @@ public class DiGraph implements DiGraph_Interface {
         }
 
         for (Node tail : node.getInEdges().keySet()) {
-            tail.removeOutEdge(node);
-            numEdges--;
+            delEdge(tail, node);
         }
 
         for (Node head : node.getOutEdges().keySet()) {
-            head.removeInEdge(node);
-            numEdges--;
-
-            if (head.getIndegree() == 0) {
-                zeroIndegreeNodes.push(head);
-            }
+            delEdge(node, head);
         }
 
         edges.remove(node);
@@ -179,6 +173,26 @@ public class DiGraph implements DiGraph_Interface {
         nodes.remove(node.getLabel());
 
         numNodes--;
+
+        return true;
+    }
+
+    public boolean delEdge(Node tail, Node head) {
+        Edge edge = head.getInEdges().get(tail);
+
+        if (edge == null) {
+            return false;
+        }
+
+        head.removeEdge(edge);
+        tail.removeEdge(edge);
+
+        if (head.getIndegree() == 0) {
+            zeroIndegreeNodes.push(head);
+        }
+
+        edgeIds.remove(edge.getId());
+        numEdges--;
 
         return true;
     }
@@ -200,23 +214,7 @@ public class DiGraph implements DiGraph_Interface {
             return false;
         }
 
-        Edge edge = head.getInEdges().get(tail);
-
-        if (edge == null) {
-            return false;
-        }
-
-        head.removeEdge(edge);
-        tail.removeEdge(edge);
-
-        if (head.getIndegree() == 0) {
-            zeroIndegreeNodes.push(head);
-        }
-
-        edgeIds.remove(edge.getId());
-        numEdges--;
-
-        return true;
+        return delEdge(tail, head);
     }
 
     /**
