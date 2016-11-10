@@ -1,6 +1,11 @@
 package DiGraph_A5;
 
-import java.util.*;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * A {@code DiGraph} is a directed graph composed of {@link Node}s and
@@ -244,25 +249,26 @@ public class DiGraph implements DiGraph_Interface {
     @Override
     public String[] topoSort() {
         Iterator<Node> nodeIterator = new ZeroIndegreeIterator(this);
-        ArrayList<String> sorted = new ArrayList<>();
+        // TODO: This will break if there are more than MAX_INT nodes.
+        String[] sorted = new String[(int) numNodes()];
 
-        while (nodeIterator.hasNext()) {
+        for (int i = 0; nodeIterator.hasNext(); i++) {
             Node next = nodeIterator.next();
 
             if (next == null) {
                 break;
             }
 
-            sorted.add(next.getLabel());
+            sorted[i] = next.getLabel();
         }
 
         // If the sorted list doesn't contain the same number of nodes
         // as the original graph, a cycle was found.
-        if (sorted.size() != numNodes()) {
+        if (sorted.length != numNodes()) {
             return null;
         }
 
-        return sorted.toArray(new String[sorted.size()]);
+        return sorted;
     }
 
     /**
