@@ -16,6 +16,11 @@ public class DiGraphPlayground {
         // in order to convince yourself your code is producing
         // the correct behavior
         //exTest();
+        DiGraph g = new DiGraph();
+        g.addNode(0, "1");
+        g.addNode(1, "2");
+        g.addEdge(0, "1", "2", 0, null);
+        g.delEdge("1", "2");
 
         DiGraph graph = new DiGraph();
         graph.addNode(0, "4");

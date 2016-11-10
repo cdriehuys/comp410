@@ -109,21 +109,18 @@ public class DiGraph implements DiGraph_Interface {
             return false;
         }
 
-        // Traverse existing edges for the starting node, and make sure
-        // this edge doesn't already exist.
-        ArrayList<Edge> nodeEdges = edges.get(tail);
-
-        for (Edge e : nodeEdges) {
-            if (e.getTail().equals(tail) && e.getHead().equals(head)) {
-                return false;
-            }
+        // Make sure edge doesn't already exist
+        if (tail.getOutEdges().containsKey(head)) {
+            return false;
         }
 
         // Create the new edge
-        nodeEdges.add(new Edge(idNum, tail, head, weight, eLabel));
+        Edge edge = new Edge(idNum, tail, head, weight, eLabel);
+
+        tail.addEdge(edge);
+        head.addEdge(edge);
 
         // Increment indegree
-        head.setIndegree(head.getIndegree() + 1);
         if (zeroIndegreeNodes.contains(head)) {
             zeroIndegreeNodes.remove(head);
         }
@@ -151,10 +148,16 @@ public class DiGraph implements DiGraph_Interface {
             return false;
         }
 
-        // Delete any edges associated with the node being removed
-        for (Node n : nodes.values()) {
-            delEdge(n.getLabel(), node.getLabel());
-            delEdge(node.getLabel(), n.getLabel());
+        for (Node tail : node.getInEdges().keySet()) {
+            tail.removeOutEdge(node);
+        }
+
+        for (Node head : node.getOutEdges().keySet()) {
+            head.removeInEdge(node);
+
+            if (head.getIndegree() == 0) {
+                zeroIndegreeNodes.push(head);
+            }
         }
 
         edges.remove(node);
@@ -182,26 +185,20 @@ public class DiGraph implements DiGraph_Interface {
             return false;
         }
 
-        ArrayList<Edge> edgeSet = edges.get(tail);
+        Edge edge = head.getInEdges().get(tail);
 
-        // TODO: More efficient edge lookup
-        for (Edge edge : edgeSet) {
-            if (edge.getHead().equals(head) && edge.getTail().equals(tail)) {
-                Node node = edge.getHead();
-
-                node.setIndegree(node.getIndegree() - 1);
-                if (node.getIndegree() == 0) {
-                    zeroIndegreeNodes.push(node);
-                }
-
-                edgeIds.remove(edge.getId());
-                edgeSet.remove(edge);
-
-                return true;
-            }
+        if (edge == null) {
+            return false;
         }
 
-        return false;
+        head.removeEdge(edge);
+        tail.removeEdge(edge);
+
+        if (head.getIndegree() == 0) {
+            zeroIndegreeNodes.push(head);
+        }
+
+        return true;
     }
 
     /**
