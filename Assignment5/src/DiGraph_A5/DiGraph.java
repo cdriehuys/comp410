@@ -177,6 +177,13 @@ public class DiGraph implements DiGraph_Interface {
         return true;
     }
 
+    /**
+     * Delete the edge between the given nodes.
+     * @param tail The start point of the edge.
+     * @param head The end point of the edge.
+     * @return {@code true} if the edge was successfully deleted,
+     *         {@code false} if the edge did not exist.
+     */
     public boolean delEdge(Node tail, Node head) {
         return delEdge(tail, head, EdgeDelete.DEL_BOTH);
     }
@@ -308,7 +315,25 @@ public class DiGraph implements DiGraph_Interface {
         }
     }
 
-    public boolean delEdge(Node tail, Node head, EdgeDelete deleteBehavior) {
+    /**
+     * Delete the edge between the given nodes.
+     *
+     * Specific deletion behavior is given by the {@code deleteBehavior}
+     * parameter.
+     * @param tail The start point of the edge.
+     * @param head The end point of the edge.
+     * @param deleteBehavior The behavior to use when deleting the edge.
+     *                       {@code DEL_HEAD} will delete the edge
+     *                       reference from {@code head} to
+     *                       {@code tail}. {@code DEL_TAIL} will delete
+     *                       the edge reference from {@code tail} to
+     *                       {@code head}. {@code DEL_BOTH} will remove
+     *                       both references. This is useful when one of
+     *                       the nodes cannot be modified.
+     * @return {@code true} if the edge was successfully deleted,
+     *         {@code false} if the edge does not exist.
+     */
+    private boolean delEdge(Node tail, Node head, EdgeDelete deleteBehavior) {
         Edge edge = head.getInEdges().get(tail);
 
         if (edge == null) {
