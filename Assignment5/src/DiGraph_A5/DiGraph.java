@@ -219,7 +219,7 @@ public class DiGraph implements DiGraph_Interface {
      */
     @Override
     public String[] topoSort() {
-        Iterator<Node> nodeIterator = new ZeroIndegreeIterator(new DiGraph(this));
+        Iterator<Node> nodeIterator = new ZeroIndegreeIterator(this);
         ArrayList<String> sorted = new ArrayList<>();
 
         while (nodeIterator.hasNext()) {
@@ -259,10 +259,12 @@ public class DiGraph implements DiGraph_Interface {
 
         /**
          * Create a new iterator.
-         * @param graph The graph to iterate through.
+         * @param graph The graph to iterate through. A copy is made for
+         *              the iterator so that the actual graph is not
+         *              modified.
          */
         ZeroIndegreeIterator(DiGraph graph) {
-            this.graph = graph;
+            this.graph = new DiGraph(graph);
 
             zeroIndegreeNodes = new ArrayDeque<>();
         }
@@ -298,6 +300,9 @@ public class DiGraph implements DiGraph_Interface {
                 }
             }
 
+            // If we can't find any more nodes with no edges pointing to
+            // them, but we still have nodes in the graph, we have
+            // reached a cycle, so return null.
             if (zeroIndegreeNodes.size() == 0 && graph.numNodes() != 0) {
                 return null;
             }
