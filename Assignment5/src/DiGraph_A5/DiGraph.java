@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * A {@code DiGraph} is a directed graph composed of nodes and edges.
+ * A {@code DiGraph} is a directed graph composed of {@link Node}s and
+ * {@link Edge}s.
  */
 public class DiGraph implements DiGraph_Interface {
     private ArrayList<Long> edgeIds;
@@ -31,11 +32,11 @@ public class DiGraph implements DiGraph_Interface {
      * @param graph The graph to make a copy of.
      */
     public DiGraph(DiGraph graph) {
-        edges = graph.edges;
-        nodes = graph.nodes;
+        edges = new HashMap<>(graph.edges);
+        nodes = new HashMap<>(graph.nodes);
 
-        edgeIds = graph.edgeIds;
-        nodeIds = graph.nodeIds;
+        edgeIds = new ArrayList<>(graph.edgeIds);
+        nodeIds = new ArrayList<>(graph.nodeIds);
     }
 
     /**
