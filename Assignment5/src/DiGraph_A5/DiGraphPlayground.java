@@ -18,18 +18,31 @@ public class DiGraphPlayground {
         //exTest();
 
         DiGraph graph = new DiGraph();
-        graph.addNode(0, "a");
-        graph.addNode(1, "b");
-        graph.addNode(2, "c");
-        graph.addNode(3, "d");
-
-        graph.addEdge(0, "a", "b", 0, null);
-        graph.addEdge(1, "b", "c", 0, null);
-        graph.addEdge(2, "c", "d", 0, null);
+        graph.addNode(0, "4");
+        graph.addNode(1, "1");
+        graph.addNode(2, "8");
+        graph.addNode(3, "2");
+        graph.addNode(4, "7");
+        graph.addNode(5, "5");
+        graph.addEdge(0, "2", "5", 0, null);
+        graph.addEdge(1, "4", "7", 0, null);
+        graph.addEdge(2, "1", "8", 0, null);
+        graph.addEdge(3, "2", "8", 0, null);
+        graph.addEdge(4, "4", "5", 0, null);
+        graph.addEdge(5, "1", "2", 0, null);
+        graph.addEdge(6, "1", "5", 0, null);
+        graph.addEdge(7, "1", "7", 0, null);
+        graph.addEdge(8, "8", "5", 0, null);
+        graph.addEdge(9, "1", "4", 0, null);
+        graph.addEdge(10, "5", "7", 0, null);
+        graph.addEdge(11, "4", "2", 0, null);
+        graph.addEdge(12, "8", "7", 0, null);
+        graph.addEdge(13, "4", "8", 0, null);
+        graph.addEdge(14, "2", "7", 0, null);
 
         String[] sorted = graph.topoSort();
 
-        Assert.assertArrayEquals(new String[] {"a", "b", "c", "d"}, sorted);
+        Assert.assertArrayEquals(new String[] {"1", "4", "2", "8", "5", "7"}, sorted);
     }
 
     public static void exTest(){

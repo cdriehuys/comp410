@@ -7,6 +7,8 @@ import java.util.*;
  * {@link Edge}s.
  */
 public class DiGraph implements DiGraph_Interface {
+    private ArrayDeque<Node> zeroIndegreeNodes;
+
     private HashSet<Long> edgeIds;
     private HashSet<Long> nodeIds;
 
@@ -17,6 +19,8 @@ public class DiGraph implements DiGraph_Interface {
      * Create a new directed graph.
      */
     public DiGraph() {
+        zeroIndegreeNodes = new ArrayDeque<>();
+
         edges = new HashMap<>();
         nodes = new HashMap<>();
 
@@ -29,6 +33,8 @@ public class DiGraph implements DiGraph_Interface {
      * @param graph The graph to make a copy of.
      */
     public DiGraph(DiGraph graph) {
+        zeroIndegreeNodes = new ArrayDeque<>(graph.zeroIndegreeNodes);
+
         edges = new HashMap<>(graph.edges);
         nodes = new HashMap<>(graph.nodes);
 
@@ -63,6 +69,10 @@ public class DiGraph implements DiGraph_Interface {
         nodes.put(label, n);
         edges.put(n, new ArrayList<>());
         nodeIds.add(idNum);
+
+        // A new node has nothing pointing to it, so it automatically
+        // has an indegree of zero.
+        zeroIndegreeNodes.push(n);
 
         return true;
     }
@@ -111,7 +121,13 @@ public class DiGraph implements DiGraph_Interface {
 
         // Create the new edge
         nodeEdges.add(new Edge(idNum, tail, head, weight, eLabel));
+
+        // Increment indegree
         head.setIndegree(head.getIndegree() + 1);
+        if (zeroIndegreeNodes.contains(head)) {
+            zeroIndegreeNodes.remove(head);
+        }
+
         edgeIds.add(idNum);
 
         return true;
@@ -172,7 +188,11 @@ public class DiGraph implements DiGraph_Interface {
         for (Edge edge : edgeSet) {
             if (edge.getHead().equals(head) && edge.getTail().equals(tail)) {
                 Node node = edge.getHead();
+
                 node.setIndegree(node.getIndegree() - 1);
+                if (node.getIndegree() == 0) {
+                    zeroIndegreeNodes.push(node);
+                }
 
                 edgeIds.remove(edge.getId());
                 edgeSet.remove(edge);
@@ -250,8 +270,6 @@ public class DiGraph implements DiGraph_Interface {
      * cycle is found.
      */
     private class ZeroIndegreeIterator implements Iterator<Node> {
-        private ArrayDeque<Node> zeroIndegreeNodes;
-
         private DiGraph graph;
 
         /**
@@ -262,8 +280,6 @@ public class DiGraph implements DiGraph_Interface {
          */
         ZeroIndegreeIterator(DiGraph graph) {
             this.graph = new DiGraph(graph);
-
-            zeroIndegreeNodes = new ArrayDeque<>();
         }
 
         /**
@@ -282,25 +298,17 @@ public class DiGraph implements DiGraph_Interface {
         public Node next() {
             // If we still have nodes with no edges pointing to them,
             // return the next node from that set.
-            if (zeroIndegreeNodes.size() != 0) {
-                Node node = zeroIndegreeNodes.removeFirst();
+            if (graph.zeroIndegreeNodes.size() != 0) {
+                Node node = graph.zeroIndegreeNodes.removeFirst();
                 graph.delNode(node.getLabel());
 
                 return node;
             }
 
-            // We've run out of nodes with nothing pointing to them, so
-            // find the next set of nodes like that.
-            for (Node node : graph.nodes.values()) {
-                if (node.getIndegree() == 0) {
-                    zeroIndegreeNodes.push(node);
-                }
-            }
-
             // If we can't find any more nodes with no edges pointing to
             // them, but we still have nodes in the graph, we have
             // reached a cycle, so return null.
-            if (zeroIndegreeNodes.size() == 0 && graph.numNodes() != 0) {
+            if (graph.zeroIndegreeNodes.size() == 0 && graph.numNodes() != 0) {
                 return null;
             }
 
