@@ -10,15 +10,16 @@ import java.util.Iterator;
  * A {@code DiGraph} is a directed graph composed of {@link Node}s and
  * {@link Edge}s.
  */
+@SuppressWarnings("WeakerAccess")
 public class DiGraph implements DiGraph_Interface {
-    private ArrayDeque<Node> zeroIndegreeNodes;
-
     private enum EdgeDelete {DEL_BOTH, DEL_HEAD, DEL_TAIL}
 
-    private HashMap<String, Node> nodes;
+    private final ArrayDeque<Node> zeroIndegreeNodes;
 
-    private HashSet<Long> edgeIds;
-    private HashSet<Long> nodeIds;
+    private final HashMap<String, Node> nodes;
+
+    private final HashSet<Long> edgeIds;
+    private final HashSet<Long> nodeIds;
 
     private long numEdges;
     private long numNodes;
@@ -42,7 +43,7 @@ public class DiGraph implements DiGraph_Interface {
      * Create a copy of a directed graph.
      * @param graph The graph to make a copy of.
      */
-    public DiGraph(DiGraph graph) {
+    private DiGraph(DiGraph graph) {
         zeroIndegreeNodes = new ArrayDeque<>(graph.zeroIndegreeNodes);
 
         nodes = new HashMap<>(graph.nodes);
@@ -178,17 +179,6 @@ public class DiGraph implements DiGraph_Interface {
     }
 
     /**
-     * Delete the edge between the given nodes.
-     * @param tail The start point of the edge.
-     * @param head The end point of the edge.
-     * @return {@code true} if the edge was successfully deleted,
-     *         {@code false} if the edge did not exist.
-     */
-    public boolean delEdge(Node tail, Node head) {
-        return delEdge(tail, head, EdgeDelete.DEL_BOTH);
-    }
-
-    /**
      * Remove an edge from the graph.
      * @param sLabel The label of the node where the edge starts.
      * @param dLabel The label of the node where the edge ends.
@@ -201,11 +191,7 @@ public class DiGraph implements DiGraph_Interface {
         Node head = nodes.get(dLabel);
         Node tail = nodes.get(sLabel);
 
-        if (head == null || tail == null) {
-            return false;
-        }
-
-        return delEdge(tail, head);
+        return !(head == null || tail == null) && delEdge(tail, head);
     }
 
     /**
@@ -269,7 +255,7 @@ public class DiGraph implements DiGraph_Interface {
      * cycle is found.
      */
     private class ZeroIndegreeIterator implements Iterator<Node> {
-        private DiGraph graph;
+        private final DiGraph graph;
 
         /**
          * Create a new iterator.
@@ -317,6 +303,17 @@ public class DiGraph implements DiGraph_Interface {
 
     /**
      * Delete the edge between the given nodes.
+     * @param tail The start point of the edge.
+     * @param head The end point of the edge.
+     * @return {@code true} if the edge was successfully deleted,
+     *         {@code false} if the edge did not exist.
+     */
+    private boolean delEdge(Node tail, Node head) {
+        return delEdge(tail, head, EdgeDelete.DEL_BOTH);
+    }
+
+    /**
+     * Delete the edge between the given nodes.
      *
      * Specific deletion behavior is given by the {@code deleteBehavior}
      * parameter.
@@ -342,12 +339,12 @@ public class DiGraph implements DiGraph_Interface {
 
         if (deleteBehavior == EdgeDelete.DEL_BOTH
                 || deleteBehavior == EdgeDelete.DEL_HEAD) {
-            head.removeEdge(edge);
+            head.removeInEdge(tail);
         }
 
         if (deleteBehavior == EdgeDelete.DEL_BOTH
                 || deleteBehavior == EdgeDelete.DEL_TAIL) {
-            tail.removeEdge(edge);
+            tail.removeOutEdge(head);
         }
 
         if (head.getIndegree() == 0) {

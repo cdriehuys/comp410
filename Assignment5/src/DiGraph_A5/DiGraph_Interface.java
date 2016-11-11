@@ -8,6 +8,7 @@ package DiGraph_A5;
  *
  */
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public interface DiGraph_Interface {
   /*
     Interface: A DIGRAPH will provide this collection of operations:

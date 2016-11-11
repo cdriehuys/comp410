@@ -9,14 +9,17 @@ package DiGraph_A5;
  * graph. It provides a way to store a weighted link from one node to
  * another. Note that this link is one-way only.
  */
-public class Edge {
-    private long id;
-    private long weight;
+class Edge {
+    private final long id;
 
-    private Node head;
-    private Node tail;
+    private final Node head;
+    private final Node tail;
 
-    private String label;
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private final long weight;
+
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private final String label;
 
     /**
      * Create a new edge.
@@ -26,7 +29,7 @@ public class Edge {
      * @param weight The weight of the edge.
      * @param label The label of the edge.
      */
-    public Edge(long id, Node tail, Node head, long weight, String label) {
+    Edge(long id, Node tail, Node head, long weight, String label) {
         this.id = id;
         this.tail = tail;
         this.head = head;
@@ -38,7 +41,7 @@ public class Edge {
      * Get the ending node for the edge.
      * @return The node that the edge points to.
      */
-    public Node getHead() {
+    Node getHead() {
         return head;
     }
 
@@ -46,23 +49,15 @@ public class Edge {
      * Get the id of the node.
      * @return The id of the node.
      */
-    public long getId() {
+    long getId() {
         return id;
-    }
-
-    /**
-     * Get the label of the edge.
-     * @return The label of the edge.
-     */
-    public String getLabel() {
-        return label;
     }
 
     /**
      * Get the starting node for the edge.
      * @return The node that the edge points from.
      */
-    public Node getTail() {
+    Node getTail() {
         return tail;
     }
 }
