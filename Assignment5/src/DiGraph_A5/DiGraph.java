@@ -219,7 +219,13 @@ public class DiGraph implements DiGraph_Interface {
     @Override
     public String[] topoSort() {
         Iterator<Node> nodeIterator = new ZeroIndegreeIterator(this);
-        // TODO: This will break if there are more than MAX_INT nodes.
+
+        // This will probably never happen, but better safe than sorry
+        if (numNodes() > Integer.MAX_VALUE) {
+            throw new RuntimeException(
+                    String.format("Can't create an array with %d values.", numNodes()));
+        }
+
         String[] sorted = new String[(int) numNodes()];
 
         for (int i = 0; nodeIterator.hasNext(); i++) {
