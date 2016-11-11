@@ -12,8 +12,6 @@ import java.util.Iterator;
  */
 @SuppressWarnings("WeakerAccess")
 public class DiGraph implements DiGraph_Interface {
-    private enum EdgeDelete {DEL_BOTH, DEL_HEAD, DEL_TAIL}
-
     private final ArrayDeque<Node> zeroIndegreeNodes;
 
     private final HashMap<String, Node> nodes;
@@ -320,13 +318,8 @@ public class DiGraph implements DiGraph_Interface {
      * @param tail The start point of the edge.
      * @param head The end point of the edge.
      * @param deleteBehavior The behavior to use when deleting the edge.
-     *                       {@code DEL_HEAD} will delete the edge
-     *                       reference from {@code head} to
-     *                       {@code tail}. {@code DEL_TAIL} will delete
-     *                       the edge reference from {@code tail} to
-     *                       {@code head}. {@code DEL_BOTH} will remove
-     *                       both references. This is useful when one of
-     *                       the nodes cannot be modified.
+     *                       For more information, see
+     *                       {@link EdgeDelete}.
      * @return {@code true} if the edge was successfully deleted,
      *         {@code false} if the edge does not exist.
      */
