@@ -238,12 +238,6 @@ public class DiGraph implements DiGraph_Interface {
             sorted[i] = next.getLabel();
         }
 
-        // If the sorted list doesn't contain the same number of nodes
-        // as the original graph, a cycle was found.
-        if (sorted.length != numNodes()) {
-            return null;
-        }
-
         return sorted;
     }
 
