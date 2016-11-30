@@ -207,20 +207,33 @@ public class DiGraph implements DiGraph_Interface {
         return numEdges;
     }
 
+    /**
+     * Get the shortest distances to all other nodes from a particular
+     * start node.
+     * 
+     * @param label: The label of the node to start at.
+     * @return An array of {@code ShortestPathInfo} instances. Each
+     * 		   instance contains information about the shortest path
+     * 		   from the starting node to a particular other node.
+     */
     @Override
     public ShortestPathInfo[] shortestPath(String label) {
         Map<Node, ShortestPathInfo> distances = new HashMap<>();
+        distances.put(nodes.get(label), new ShortestPathInfo(label, 0));
 
         // Create queue and place starting node in it.
         MinBinHeap queue = new MinBinHeap();
         queue.insert(new EntryPair(label, 0));
 
         while (queue.size() != 0) {
+        	// Pop the current minimum from the queue
             String curLabel = queue.getMin().getValue();
             queue.delMin();
 
             Node curNode = nodes.get(curLabel);
 
+            // Loop through all nodes adjacent to the current minimum
+            // node.
             for (Edge edge : curNode.getOutEdges().values()) {
                 Node adjNode = edge.getHead();
                 ShortestPathInfo adjInfo = distances.getOrDefault(
@@ -229,9 +242,12 @@ public class DiGraph implements DiGraph_Interface {
                 long curDist = adjInfo.getTotalWeight();
                 long newWeight = distances.get(curNode).getTotalWeight() + edge.getWeight();
 
+                // If we found a shorter path, set the shortest path as
+                // the current path, and re-add the node to the queue.
                 if (newWeight < curDist) {
                     ShortestPathInfo newInfo = new ShortestPathInfo(adjNode.getLabel(), newWeight);
                     distances.put(adjNode, newInfo);
+                    queue.insert(new EntryPair(adjNode.getLabel(), (int)newWeight));
                 }
             }
         }
