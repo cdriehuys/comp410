@@ -15,7 +15,6 @@ class Edge {
     private final Node head;
     private final Node tail;
 
-    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final long weight;
 
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -59,5 +58,13 @@ class Edge {
      */
     Node getTail() {
         return tail;
+    }
+
+    /**
+     * Get the weight of the edge.
+     * @return The edge's weight.
+     */
+    long getWeight() {
+        return weight;
     }
 }

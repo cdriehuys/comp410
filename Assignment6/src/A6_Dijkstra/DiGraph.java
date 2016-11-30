@@ -1,10 +1,7 @@
 package A6_Dijkstra;
 
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * A {@code DiGraph} is a directed graph composed of {@link Node}s and
@@ -212,7 +209,34 @@ public class DiGraph implements DiGraph_Interface {
 
     @Override
     public ShortestPathInfo[] shortestPath(String label) {
-        return new ShortestPathInfo[0];
+        Map<Node, ShortestPathInfo> distances = new HashMap<>();
+
+        // Create queue and place starting node in it.
+        MinBinHeap queue = new MinBinHeap();
+        queue.insert(new EntryPair(label, 0));
+
+        while (queue.size() != 0) {
+            String curLabel = queue.getMin().getValue();
+            queue.delMin();
+
+            Node curNode = nodes.get(curLabel);
+
+            for (Edge edge : curNode.getOutEdges().values()) {
+                Node adjNode = edge.getHead();
+                ShortestPathInfo adjInfo = distances.getOrDefault(
+                        adjNode, new ShortestPathInfo(adjNode.getLabel(), Long.MAX_VALUE));
+
+                long curDist = adjInfo.getTotalWeight();
+                long newWeight = distances.get(curNode).getTotalWeight() + edge.getWeight();
+
+                if (newWeight < curDist) {
+                    ShortestPathInfo newInfo = new ShortestPathInfo(adjNode.getLabel(), newWeight);
+                    distances.put(adjNode, newInfo);
+                }
+            }
+        }
+
+        return distances.values().toArray(new ShortestPathInfo[distances.size()]);
     }
 
     /**

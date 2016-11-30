@@ -1,16 +1,21 @@
 package A6_Dijkstra;
+
 /**
  * COMP 410
  *
  * Make your class and its methods public!
  * Don't modify this file!
+ * Submission directions: Zip your eclipse project folder
+ * (e.g. Assignment6) for this assignment and upload it to Sakai.
+ * That folder should contain src and bin folders with
+ * your code/classes.
+ *
  * Begin by creating a class that implements this interface.
  *
  */
 
-@SuppressWarnings({"WeakerAccess", "unused"})
 public interface DiGraph_Interface {
-  /*
+ /*
     Interface: A DIGRAPH will provide this collection of operations:
 
     addNode
@@ -62,6 +67,13 @@ public interface DiGraph_Interface {
                 if there is no topo sort (a cycle) return null for the array
                 if there is a topo sort, return an array containing the node
                   labels in order
+
+    shortestPath:
+      in: string label for start vertex
+      return: array of ShortestPathInfo objects (ShortestPathInfo)
+              length of this array should be numNodes (as you will put in all shortest
+              paths including from source to itself)
+              See ShortestPathInfo class for what each field of this object should contain
   */
 
     // ADT operations
